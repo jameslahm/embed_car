@@ -78,7 +78,8 @@ void ShowHomePage(void)
 	}
 	if(step == 5){
 		snprintf((char*)buff, 21, "Battery:   %0.1f(V)      ", g_BatVolt/100.0);
-		OLED_ShowString(0, 5, buff);		
+		// snprintf((char*)buff, 21, "Positio:   %0.1f(m)      ", g_fCarPosition/100.0);
+		OLED_ShowString(0, 5, buff);	
 		}
 }
 

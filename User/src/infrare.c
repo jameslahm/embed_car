@@ -51,14 +51,14 @@ char InfraredDetect(void)
 
 	if(Lc)
 		resut |= infrared_channel_Lc;
-//	else if(Lb)
-//		resut |= infrared_channel_Lb;
+	else if(Lb)
+		resut |= infrared_channel_Lb;
 	else if(La)
 		resut |= infrared_channel_La;
 	else if(Ra)
 		resut |= infrared_channel_Ra;
-//	else if(Rb)
-//		resut |= infrared_channel_Rb;
+	else if(Rb)
+		resut |= infrared_channel_Rb;
 	else if(Rc)
 		resut |= infrared_channel_Rc;
 

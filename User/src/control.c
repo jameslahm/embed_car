@@ -548,6 +548,8 @@ void TailingControl(void)
 
 	result = InfraredDetect();
 	
+	if(result == )
+
 	if(result & infrared_channel_Lc)
 		direct = -10;
 	else if(result & infrared_channel_Lb)
@@ -620,26 +622,26 @@ void ReportModeOneControl(void){
 			break;
 		}
 		case LEFT_TURN:{
-			Steer(6,0)
+			Steer(6,4);
 			g_iLeftTurnRoundCnt = -750;
 			g_iRightTurnRoundCnt = 750;
 			if((g_iLeftTurnRoundCnt > 0 ) && (g_iRightTurnRoundCnt < 0)){
 				report_mode_one_status = LEFT_TURN_STOP;
 				ResetReportOneTimer();
-				ResetDistance();
 				Steer(0,0);
 			}
+			break;
 		}
 		case RIGHT_TURN:{
-			Steer(-6,0)
+			Steer(-6,4);
 			g_iLeftTurnRoundCnt = 750;
 			g_iRightTurnRoundCnt = -750;
 			if((g_iLeftTurnRoundCnt < 0 ) && (g_iRightTurnRoundCnt > 0)){
 				report_mode_one_status = RIGHT_TURN_STOP;
 				ResetReportOneTimer();
-				ResetDistance();
 				Steer(0,0);
 			}
+			break;
 		}
 		case FORWARD_STOP:
 		case BACK_STOP:
@@ -667,21 +669,29 @@ void ReportModeOneControl(void){
 
 #define TRACE 0
 #define AVOID 1
+#define STOP 2
 
 int report_mode_two_status = TRACE
 
 void ReportModeTwoControl(){
 	// 首先寻迹进入赛道区
+
+	char result;
+	result = InfraredDetect();
+	if(result == (infrared_channel_La | infrared_channel_Lb | infrared_channel_Lc | infrared_channel_Ra 
+			| infrared_channel_Rb | infrared_channel_Rc)){
+				report_mode_two_status = STOP;
+				Steer(0,0);
+				return;
+			}
+
 	if(report_mode_two_status==TRACE){
 		#if INFRARE_DEBUG_EN > 0
 		char buff[32];	
-	#endif
-		char result;
+		#endif
 		float direct = 0;
 		float speed = 0;
 
-		result = InfraredDetect();
-		
 		if(result & infrared_channel_Lc)
 			direct = -10;
 		else if(result & infrared_channel_Lb)
@@ -703,15 +713,22 @@ void ReportModeTwoControl(){
 
 		Steer(direct, speed);
 
-	#if INFRARE_DEBUG_EN > 0
-		sprintf(buff, "Steer:%d, Speed:%d\r\n",(int)direct,  (int)speed);
-		DebugOutStr(buff);
-	#endif
+		#if INFRARE_DEBUG_EN > 0
+			sprintf(buff, "Steer:%d, Speed:%d\r\n",(int)direct,  (int)speed);
+			DebugOutStr(buff);
+		#endif
 	}
 
 	// 进入避障区
 	if(report_mode_two_status = AVOID){
-		
+		if((Distance >=0 ) && (Distance <= 20)){
+			Steer(5,0);
+			g_iLeftTurnRoundCnt = 750;
+			g_iRightTurnRoundCnt = -750;
+		} 
+		if((g_iLeftTurnRoundCnt<0) && (g_iRightTurnRoundCnt >0)){
+			Steer(0,4);
+		}
 	}
 
 	//
