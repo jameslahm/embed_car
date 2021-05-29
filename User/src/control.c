@@ -19,7 +19,7 @@
 #include "bsp.h"
 #include "ultrasonic.h"
 #include "infrare.h"
-
+#include "usart.h"
 
 unsigned char g_u8MainEventCount;
 unsigned char g_u8SpeedControlCount;
@@ -54,6 +54,7 @@ float g_fCarSpeed;
 float g_iCarSpeedSet;
 float g_fCarSpeedOld;
 float g_fCarPosition;
+
 
 /*-----角度环和速度环PID控制参数-----*/
 PID_t g_tCarAnglePID={17.0, 0, 23.0};	//*5 /10
@@ -593,34 +594,50 @@ void ResetReportOneTimer(){
 }
 
 void IncReportOneTimer(){
-	report_mode_one_timer += 20
+	report_mode_one_timer += 20;
 }
 
+float g_Distance = 0;
+float g_speed_old = 0;
 // 每20ms执行一次
 void ReportModeOneControl(void){
+	float current_speed;
+	char buffer[40];
+	sprintf(buffer,"state:%d distance:%f m speed:%f cm/s",report_mode_one_status,g_Distance,g_fCarSpeed);
+	Uart1SendStr(buffer);
 	switch(report_mode_one_status){
 		case FORWARD:{
-			if(g_fCarPosition>0.9 && g_fCarPosition < 1.1){
+			if(g_Distance>0.9 && g_Distance < 1.1){
 				report_mode_one_status = FORWARD_STOP;
+				g_Distance = 0;
+				g_speed_old = 0;
 				ResetReportOneTimer();
 				Steer(0,0);
 			} else {
-				Steer(0,4);
+				Steer(0,1);
+				current_speed = (g_speed_old + g_fCarSpeed)*0.5;
+				g_speed_old = g_fCarSpeed;
+				g_Distance += (current_speed*0.01) *0.02;
 			}
 			break;
 		}
 		case BACK:{
-			if(g_fCarPosition> 2 && g_fCarPosition < 2.2){
+			if(g_Distance <-0.9 && g_Distance > -1.1){
 				report_mode_one_status = BACK_STOP;
+				g_Distance = 0;
+				g_speed_old = 0;
 				ResetReportOneTimer();
 				Steer(0,0);
 			} else {
-				Steer(0,-4);
+				Steer(0,-1);
+				current_speed = (g_speed_old + g_fCarSpeed)*0.5;
+				g_speed_old = g_fCarSpeed;
+				g_Distance += (current_speed*0.01) *0.02;				
 			}
 			break;
 		}
 		case LEFT_TURN:{
-			Steer(6,4);
+			Steer(6,1);
 			g_iLeftTurnRoundCnt = -750;
 			g_iRightTurnRoundCnt = 750;
 			if((g_iLeftTurnRoundCnt > 0 ) && (g_iRightTurnRoundCnt < 0)){
@@ -631,7 +648,7 @@ void ReportModeOneControl(void){
 			break;
 		}
 		case RIGHT_TURN:{
-			Steer(-6,4);
+			Steer(-6,1);
 			g_iLeftTurnRoundCnt = 750;
 			g_iRightTurnRoundCnt = -750;
 			if((g_iLeftTurnRoundCnt < 0 ) && (g_iRightTurnRoundCnt > 0)){
@@ -669,7 +686,7 @@ void ReportModeOneControl(void){
 #define AVOID 1
 #define STOP 2
 
-int report_mode_two_status = TRACE
+int report_mode_two_status = TRACE;
 
 void ReportModeTwoControl(){
 	// 首先寻迹进入赛道区
@@ -704,7 +721,7 @@ void ReportModeTwoControl(){
 			direct = 4;
 		else
 			direct = 0.0;
-			report_mode_two_status = AVOID
+			report_mode_two_status = AVOID;
 			
 
 		speed = 3;
@@ -718,7 +735,7 @@ void ReportModeTwoControl(){
 	}
 
 	// 进入避障区
-	if(report_mode_two_status = AVOID){
+	if(report_mode_two_status == AVOID){
 		if((Distance >=0 ) && (Distance <= 20)){
 			Steer(5,0);
 			g_iLeftTurnRoundCnt = 750;
