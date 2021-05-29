@@ -547,8 +547,6 @@ void TailingControl(void)
 	float speed = 0;
 
 	result = InfraredDetect();
-	
-	if(result == )
 
 	if(result & infrared_channel_Lc)
 		direct = -10;
