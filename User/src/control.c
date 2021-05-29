@@ -607,7 +607,7 @@ void ReportModeOneControl(void){
 				ResetReportOneTimer();
 				Steer(0,0);
 			} else {
-				Steer(0,4)
+				Steer(0,4);
 			}
 			break;
 		}
@@ -617,7 +617,7 @@ void ReportModeOneControl(void){
 				ResetReportOneTimer();
 				Steer(0,0);
 			} else {
-				Steer(0,-4)
+				Steer(0,-4);
 			}
 			break;
 		}
