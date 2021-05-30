@@ -359,8 +359,8 @@ void AngleCalculate(void) {
   
   g_fGyro_z = g_fGyro_z / 16.4;
   g_fGyroAngleSpeed_z = g_fGyro_z;
-  g_fxyAngle = 0.98 * (g_fxyAngle + g_fGyroAngleSpeed_z * 0.005) - 0.02 * g_fYawAngle;
-
+  // g_fxyAngle = 0.98 * (g_fxyAngle + g_fGyroAngleSpeed_z * 0.005) - 0.02 * g_fYawAngle;
+  g_fxyAngle = g_fxyAngle + g_fGyroAngleSpeed_z *0.005;
 }
 
 /***************************************************************
@@ -705,6 +705,10 @@ void ReportModeOneControl(void) {
 #define AVOID_FORWARD_AFTER_LEFT_TWO 6
 #define AVOID_RIGHT_TWO 7
 
+#define DISTANCE_FORWARD 0
+#define DISTANCE_BACKWARD 1
+#define DISTANCE_TURN 2
+
 int avoid_status = AVOID_FORWARD;
 int report_mode_two_status = AVOID;
 int right_one_start = 1;
@@ -713,6 +717,11 @@ int right_two_start = 1;
 int left_two_start = 1;
 int current_direction = 1;
 int rotate_speed = 3;
+int delta_distance = 0;
+int distance_old = 0;
+// int leq_0 = 1;
+// int geq_180 = 0;
+int distance_status = DISTANCE_FORWARD;
 
 void ReportModeTwoControl() {
   // 首先寻迹进入赛道区
@@ -766,21 +775,33 @@ void ReportModeTwoControl() {
 
   // 进入避障区
   if (report_mode_two_status == AVOID){
-    char buffer[50];
-    sprintf(buffer,"xy angle:%f yaw angle:%f angle speed:%f\r\n",-g_fxyAngle,g_fYawAngle,g_fGyroAngleSpeed_z);
+    char buffer[40];
+    sprintf(buffer,"xy angle:%f angle speed:%f\r\n direction:%d",-g_fxyAngle,g_fGyroAngleSpeed_z,current_direction);
     Uart1SendStr(buffer);
-    if (Distance <= 10){
+    delta_distance = Distance - distance_old;
+    distance_old = Distance;
+    if (delta_distance > 20 || delta_distance < -20){
+    }
+    else{
+      if(Distance <= 10 || Distance > 100)
+        distance_status = DISTANCE_BACKWARD;
+      else if (Distance >=20 && Distance < 30)
+        distance_status = DISTANCE_TURN;
+      else if (Distance >= 30)
+        distance_status = DISTANCE_FORWARD;
+    }
+    if (distance_status == DISTANCE_BACKWARD){
       Steer(0,-3);
     }
-    else if (Distance >= 20 && Distance < 30){
+    else if (distance_status == DISTANCE_TURN){
       float angle = 90 + g_fxyAngle;
-      if (angle <= 0 || angle >= 180){
+      if (angle <= 0 && current_direction == 1){
+        current_direction = -current_direction;
+      }
+      if(angle >= 180 && current_direction == -1){
         current_direction = -current_direction;
       }
       Steer(current_direction * rotate_speed,0);  
-    }
-    else if (Distance>=30 && Distance < 40){
-      Steer(0,2);
     }
     else {
       Steer(0,4);
