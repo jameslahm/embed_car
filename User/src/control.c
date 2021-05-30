@@ -680,23 +680,27 @@ void ReportModeOneControl(void) {
 #define AVOID_RIGHT_TWO 7
 
 int avoid_status = AVOID_FORWARD;
-int report_mode_two_status = TRACE;
+int report_mode_two_status = AVOID;
+int right_one_start = 1;
+int left_one_start = 1;
+int right_two_start = 1;
+int left_two_start = 1;
 
 void ReportModeTwoControl() {
   // 首先寻迹进入赛道区
 
   char result;
-	char buffer[20];
-  result = InfraredDetect();
-  sprintf(buffer,"result:%d",result);
-  Uart1SendStr(buffer);
-  if (result ==
-      (infrared_channel_La | infrared_channel_Lc |
-       infrared_channel_Ra | infrared_channel_Rc)) {
-    report_mode_two_status = STOP;
-    Steer(0, 0);
-    return;
-  }
+	// char buffer[20];
+  // result = InfraredDetect();
+  // sprintf(buffer,"result:%d",result);
+  // Uart1SendStr(buffer);
+  // if (result ==
+  //     (infrared_channel_La | infrared_channel_Lc |
+  //      infrared_channel_Ra | infrared_channel_Rc)) {
+  //   report_mode_two_status = STOP;
+  //   Steer(0, 0);
+  //   return;
+  // }
 
   if (report_mode_two_status == TRACE) {
 #if INFRARE_DEBUG_EN > 0
@@ -734,9 +738,16 @@ void ReportModeTwoControl() {
 
   // 进入避障区
   if (report_mode_two_status == AVOID) {
+    char buffer[40];
+    sprintf(buffer,"status:%d distance:%d",avoid_status,Distance);
+    Uart1SendStr(buffer);
     switch (avoid_status) {
     case AVOID_FORWARD: {
-      if (Distance >= 0 && Distance <= 20) {
+      left_one_start = 1;
+      left_two_start = 1;
+      right_one_start = 1;
+      right_two_start = 1;
+      if (Distance > 0 && Distance <= 20) {
         avoid_status = AVOID_RIGHT_ONE;
       } else {
         Steer(0, 4);
@@ -744,12 +755,12 @@ void ReportModeTwoControl() {
       break;
     }
     case AVOID_RIGHT_ONE: {
-      if ((Distance >= 0) && (Distance <= 20)) {
+      if (right_one_start == 1) {
         Steer(5, 0);
-        g_iLeftTurnRoundCnt = 750;
-        g_iRightTurnRoundCnt = -750;
+        g_iLeftTurnRoundCnt = 1200;
+        right_one_start = 0;
       }
-      if ((g_iLeftTurnRoundCnt < 0) && (g_iRightTurnRoundCnt > 0)) {
+      if ((g_iLeftTurnRoundCnt < 0)) {
         Steer(0, 4);
         avoid_status = AVOID_FORWARD_AFTER_RIGHT_ONE;
       }
@@ -764,12 +775,12 @@ void ReportModeTwoControl() {
       break;
     }
     case AVOID_LEFT_ONE: {
-      if ((Distance >= 0) && (Distance <= 20)) {
+      if (left_one_start == 1) {
         Steer(-5, 0);
-        g_iLeftTurnRoundCnt = -750;
-        g_iRightTurnRoundCnt = 750;
+        g_iRightTurnRoundCnt = 1200;
+        left_one_start = 0;
       }
-      if ((g_iLeftTurnRoundCnt > 0) && (g_iRightTurnRoundCnt < 0)) {
+      if ((g_iRightTurnRoundCnt < 0)) {
         Steer(0, 4);
         avoid_status = AVOID_FORWARD_AFTER_LEFT_ONE;
       }
@@ -784,12 +795,12 @@ void ReportModeTwoControl() {
       break;
     }
     case AVOID_LEFT_TWO: {
-      if ((Distance >= 0) && (Distance <= 20)) {
+      if (left_two_start ==1) {
         Steer(-5, 0);
-        g_iLeftTurnRoundCnt = -750;
-        g_iRightTurnRoundCnt = 750;
+        g_iRightTurnRoundCnt = 1200;
+        left_two_start = 0;
       }
-      if ((g_iLeftTurnRoundCnt > 0) && (g_iRightTurnRoundCnt < 0)) {
+      if ((g_iRightTurnRoundCnt < 0)) {
         Steer(0, 4);
         avoid_status = AVOID_FORWARD_AFTER_LEFT_TWO;
       }
@@ -804,12 +815,12 @@ void ReportModeTwoControl() {
       break;
     }
     case AVOID_RIGHT_TWO: {
-      if ((Distance >= 0) && (Distance <= 20)) {
+      if (right_two_start == 1) {
         Steer(5, 0);
-        g_iLeftTurnRoundCnt = 750;
-        g_iRightTurnRoundCnt = -750;
+        g_iLeftTurnRoundCnt = 1200;
+        right_two_start = 0;
       }
-      if ((g_iLeftTurnRoundCnt < 0) && (g_iRightTurnRoundCnt > 0)) {
+      if ((g_iLeftTurnRoundCnt < 0)) {
         Steer(0, 4);
         avoid_status = AVOID_FORWARD;
       }
