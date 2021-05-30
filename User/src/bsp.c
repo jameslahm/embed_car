@@ -1,12 +1,12 @@
 /**********************************************************************
-°æÈ¨ËùÓÐ£º	ß÷ÎØ´´ÐÂ¿Æ¼¼£¬2017.
-¹Ù		Íø£º	http://www.miaowlabs.com
-ÌÔ		±¦£º	https://miaowlabs.taobao.com/
-ÎÄ ¼þ Ãû: 	bsp.c
-×÷    Õß:   ß÷ÎØÊµÑéÊÒ
-°æ		±¾:   3.00
-Íê³ÉÈÕÆÚ:   2017.03.01
-¸Å		Òª: 	
+ï¿½ï¿½È¨ï¿½ï¿½ï¿½Ð£ï¿½	ï¿½ï¿½ï¿½Ø´ï¿½ï¿½Â¿Æ¼ï¿½ï¿½ï¿½2017.
+ï¿½ï¿½		ï¿½ï¿½ï¿½ï¿½	http://www.miaowlabs.com
+ï¿½ï¿½		ï¿½ï¿½ï¿½ï¿½	https://miaowlabs.taobao.com/
+ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½: 	bsp.c
+ï¿½ï¿½    ï¿½ï¿½:   ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½		ï¿½ï¿½:   3.00
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:   2017.03.01
+ï¿½ï¿½		Òª: 	
 
 
 ***********************************************************************/
@@ -27,8 +27,8 @@
 
 
 /* 
-	Ê¹ÄÜSWD£¬ Ê§ÄÜJTAG
-	PB3,PB4,PA15×öÆÕÍ¨IOÊ¹ÓÃ£¨±ØÐëÊ§ÄÜJTAG£© 
+	Ê¹ï¿½ï¿½SWDï¿½ï¿½ Ê§ï¿½ï¿½JTAG
+	PB3,PB4,PA15ï¿½ï¿½ï¿½ï¿½Í¨IOÊ¹ï¿½Ã£ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½JTAGï¿½ï¿½ 
 */
 void SWDConfig(void)
 {
@@ -47,7 +47,7 @@ void LEDInit(void)
 
   /*GPIOB Configuration*/
   GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_12;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;		    // ¸´ÓÃÍÆÍìÊä³ö
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;		    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_Init(GPIOB, &GPIO_InitStructure);
 }
@@ -65,7 +65,7 @@ void LEDToggle(void)
 	}
 }
 /*
-	¶ÁÈ¡µ¥Æ¬»ú12×Ö½Ú ID
+	ï¿½ï¿½È¡ï¿½ï¿½Æ¬ï¿½ï¿½12ï¿½Ö½ï¿½ ID
 */
 #define UniqueID_Addr 0x1FFFF7E8U
 void GetUniqueID(char* ID)
@@ -79,7 +79,7 @@ void GetUniqueID(char* ID)
 
 
 /*
-	ÉèÖÃÀ¶ÑÀÃû³Æ
+	ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 */
 void SetBlueToothName(void)
 {
@@ -94,42 +94,42 @@ void SetBlueToothName(void)
 
 
 /*
-	bsp³õÊ¼»¯
+	bspï¿½ï¿½Ê¼ï¿½ï¿½
 */
 void BspInit(void)
 {
 	SWDConfig();
 	
-	ADCInit();				//ADC³õÊ¼»¯
+	ADCInit();				//ADCï¿½ï¿½Ê¼ï¿½ï¿½
 
-	USART1Init();			//´®¿Ú1³õÊ¼»¯-µ×°åÔ¤ÁôÏÂÔØ¼°µ÷ÊÔÓÃ
-	USART3Init(0);			//´®¿Ú3³õÊ¼»¯-ÓÃÓÚÀ¶ÑÀ
+	USART1Init();			//ï¿½ï¿½ï¿½ï¿½1ï¿½ï¿½Ê¼ï¿½ï¿½-ï¿½×°ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	USART3Init(0);			//ï¿½ï¿½ï¿½ï¿½3ï¿½ï¿½Ê¼ï¿½ï¿½-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-	TIM1_Cap_Init();		//TIM1³õÊ¼»¯-ÓÃÓÚ³¬Éù²¨¸úËæ¹¦ÄÜ
-	TIM3_PWM_Init(); 		//PWM³õÊ¼»¯
-	TIM2_Encoder_Init();	//TIM2Õý½»½âÂë³õÊ¼»¯-ÓÃÓÚ²âËÙ
-	TIM4_Encoder_Init();	//TIM4Õý½»½âÂë³õÊ¼»¯-ÓÃÓÚ²âËÙ
+	TIM1_Cap_Init();		//TIM1ï¿½ï¿½Ê¼ï¿½ï¿½-ï¿½ï¿½ï¿½Ú³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ¹¦ï¿½ï¿½
+	TIM3_PWM_Init(); 		//PWMï¿½ï¿½Ê¼ï¿½ï¿½
+	TIM2_Encoder_Init();	//TIM2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½-ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½
+	TIM4_Encoder_Init();	//TIM4ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½-ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½
 	
-	i2cInit();	 			//I2C³õÊ¼»¯
+	i2cInit();	 			//I2Cï¿½ï¿½Ê¼ï¿½ï¿½
 	
-	InfraredIOInit();		//ºìÍâIO¿Ú³õÊ¼»¯
+	InfraredIOInit();		//ï¿½ï¿½ï¿½ï¿½IOï¿½Ú³ï¿½Ê¼ï¿½ï¿½
 
-	OLED_Init();			//OLED³õÊ¼»¯
+	OLED_Init();			//OLEDï¿½ï¿½Ê¼ï¿½ï¿½
 	delay_ms(20);
-	MPU6050_Init();		    //MPU6050³õÊ¼»¯
+	MPU6050_Init();		    //MPU6050ï¿½ï¿½Ê¼ï¿½ï¿½
 	
-	LEDInit();				//Ö¸Ê¾µÆ³õÊ¼»¯
+	LEDInit();				//Ö¸Ê¾ï¿½Æ³ï¿½Ê¼ï¿½ï¿½
 	
-	UltraSelfCheck();							//	³¬ÉùÄ£¿é¿ª»ú×Ô¼ì
-	InfrareSelfCheck();						//  ºìÍâÄ£¿é¿ª»ú×Ô¼ì
+	UltraSelfCheck();							//	ï¿½ï¿½ï¿½ï¿½Ä£ï¿½é¿ªï¿½ï¿½ï¿½Ô¼ï¿½
+	InfrareSelfCheck();						//  ï¿½ï¿½ï¿½ï¿½Ä£ï¿½é¿ªï¿½ï¿½ï¿½Ô¼ï¿½
 	
-	delay_ms(500);			//ÑÓÊ±0.5s£¬µÈ´ýÀ¶ÑÀÄ£¿éÆô¶¯
-	Uart3SendStr("AT+BAUD8\r\n"); //ÅäÖÃÀ¶ÑÀ´®¿Ú²¨ÌØÂÊÎª115200 ( Ô­²¨ÌØÂÊ9600 ) 
+	delay_ms(500);			//ï¿½ï¿½Ê±0.5sï¿½ï¿½ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	Uart3SendStr("AT+BAUD8\r\n"); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½ï¿½ï¿½Îª115200 ( Ô­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½9600 ) 
 	delay_ms(20);
-	Uart3SendStr("AT+RESET\r\n");  //À¶ÑÀ¸´Î»
-	USART3Init(1);					//¸ü¸ÄUART3²¨ÌØÂÊÎª115200
+	Uart3SendStr("AT+RESET\r\n");  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»
+	USART3Init(1);					//ï¿½ï¿½ï¿½ï¿½UART3ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îª115200
 	delay_ms(20);
-	SetBlueToothName();		//ÅäÖÃÀ¶ÑÀÄ£¿éÃû³Æ
-	Uart3SendStr("AT+RESET\r\n");  //À¶ÑÀ¸´Î»
+	SetBlueToothName();		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	Uart3SendStr("AT+RESET\r\n");  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»
 }
 

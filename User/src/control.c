@@ -686,7 +686,10 @@ void ReportModeTwoControl() {
   // 首先寻迹进入赛道区
 
   char result;
+	char buffer[20];
   result = InfraredDetect();
+  sprintf(buffer,"result:%d",result);
+  Uart1SendStr(buffer);
   if (result ==
       (infrared_channel_La | infrared_channel_Lb | infrared_channel_Lc |
        infrared_channel_Ra | infrared_channel_Rb | infrared_channel_Rc)) {
