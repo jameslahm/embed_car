@@ -524,14 +524,14 @@ void TailingControl(void) {
 
   if (result & infrared_channel_Lc)
     direct = -10;
-  else if (result & infrared_channel_Lb)
-    direct = -6;
+//   else if (result & infrared_channel_Lb)
+//     direct = -6;
   else if (result & infrared_channel_La)
     direct = -4;
   else if (result & infrared_channel_Rc)
     direct = 10;
-  else if (result & infrared_channel_Rb)
-    direct = 6;
+//   else if (result & infrared_channel_Rb)
+//     direct = 6;
   else if (result & infrared_channel_Ra)
     direct = 4;
   else
@@ -688,8 +688,8 @@ void ReportModeTwoControl() {
   char result;
   result = InfraredDetect();
   if (result ==
-      (infrared_channel_La | infrared_channel_Lb | infrared_channel_Lc |
-       infrared_channel_Ra | infrared_channel_Rb | infrared_channel_Rc)) {
+      (infrared_channel_La | infrared_channel_Lc |
+       infrared_channel_Ra | infrared_channel_Rc)) {
     report_mode_two_status = STOP;
     Steer(0, 0);
     return;
@@ -704,14 +704,14 @@ void ReportModeTwoControl() {
 
     if (result & infrared_channel_Lc)
       direct = -10;
-    else if (result & infrared_channel_Lb)
-      direct = -6;
+    // else if (result & infrared_channel_Lb)
+    //   direct = -6;
     else if (result & infrared_channel_La)
       direct = -4;
     else if (result & infrared_channel_Rc)
       direct = 10;
-    else if (result & infrared_channel_Rb)
-      direct = 6;
+    // else if (result & infrared_channel_Rb)
+    //   direct = 6;
     else if (result & infrared_channel_Ra)
       direct = 4;
     else {

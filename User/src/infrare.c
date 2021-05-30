@@ -16,10 +16,10 @@
 
 
 #define La GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_5)
-#define Lb GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_4)
+// #define Lb GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_4)
 #define Lc GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_3)
 #define Ra GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_15)
-#define Rb GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_12)
+// #define Rb GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_12)
 #define Rc GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_8)
 
 void InfraredIOInit(void)
@@ -51,14 +51,14 @@ char InfraredDetect(void)
 
 	if(Lc)
 		resut |= infrared_channel_Lc;
-	else if(Lb)
-		resut |= infrared_channel_Lb;
+	// else if(Lb)
+	// 	resut |= infrared_channel_Lb;
 	else if(La)
 		resut |= infrared_channel_La;
 	else if(Ra)
 		resut |= infrared_channel_Ra;
-	else if(Rb)
-		resut |= infrared_channel_Rb;
+	// else if(Rb)
+	// 	resut |= infrared_channel_Rb;
 	else if(Rc)
 		resut |= infrared_channel_Rc;
 
