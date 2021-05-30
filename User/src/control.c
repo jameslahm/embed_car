@@ -298,10 +298,11 @@ void SetMotorVoltageAndDirection(int i16LeftVoltage,int i16RightVoltage)
 ***************************************************************/
 void MotorOutput(void)
 {
+	// char buffer[50];
 	g_fLeftMotorOut  = g_fAngleControlOut - g_fSpeedControlOut - g_fBluetoothDirection ;	//这里的电机输出等于角度环控制量 + 速度环外环,这里的 - g_fSpeedControlOut 是因为速度环的极性跟角度环不一样，角度环是负反馈，速度环是正反馈
 	g_fRightMotorOut = g_fAngleControlOut - g_fSpeedControlOut + g_fBluetoothDirection ;
-
-
+	// sprintf(buffer,"Left Voltage:%f,Right Voltage:%f,Direction:%f\r\n",g_fLeftMotorOut,g_fRightMotorOut,g_fBluetoothDirection);
+	// Uart1SendStr(buffer);
 	/*增加死区常数*/
 	if((int)g_fLeftMotorOut>0)       g_fLeftMotorOut  += MOTOR_OUT_DEAD_VAL;
 	else if((int)g_fLeftMotorOut<0)  g_fLeftMotorOut  -= MOTOR_OUT_DEAD_VAL;
@@ -399,7 +400,7 @@ void SpeedControl(void)
 	
 	
 	g_fCarSpeed = (g_s32LeftMotorPulseSigma  + g_s32RightMotorPulseSigma ) * 0.5 ;
-  g_s32LeftMotorPulseSigma = g_s32RightMotorPulseSigma = 0;	  //全局变量 注意及时清零
+  	g_s32LeftMotorPulseSigma = g_s32RightMotorPulseSigma = 0;	  //全局变量 注意及时清零
     	
 	g_fCarSpeed = 0.7 * g_fCarSpeedOld + 0.3 * g_fCarSpeed ;//低通滤波，使速度更平滑
 	g_fCarSpeedOld = g_fCarSpeed;
@@ -418,7 +419,7 @@ void SpeedControl(void)
 	if((s16)g_fCarPosition < CAR_POSITION_MIN)    g_fCarPosition = CAR_POSITION_MIN;
 	
 	g_fSpeedControlOutOld = g_fSpeedControlOutNew;
-  g_fSpeedControlOutNew = fP + g_fCarPosition;
+  	g_fSpeedControlOutNew = fP + g_fCarPosition;
 }
 /***************************************************************
 ** 函数名称: SpeedControlOutput
@@ -570,7 +571,7 @@ void TailingControl(void)
 
 #if INFRARE_DEBUG_EN > 0
 	sprintf(buff, "Steer:%d, Speed:%d\r\n",(int)direct,  (int)speed);
-	DebugOutStr(buff);
+	// DebugOutStr(buff);
 #endif
 }
 
@@ -599,12 +600,21 @@ void IncReportOneTimer(){
 
 float g_Distance = 0;
 float g_speed_old = 0;
+int print_counter = 0;
+int left_turn_start = 1;
+int right_turn_start = 1;
 // 每20ms执行一次
 void ReportModeOneControl(void){
-	float current_speed;
-	char buffer[40];
-	sprintf(buffer,"state:%d distance:%f m speed:%f cm/s",report_mode_one_status,g_Distance,g_fCarSpeed);
-	Uart1SendStr(buffer);
+	float current_speed;	
+
+	print_counter ++;
+	if(print_counter >= 25){
+		char buffer[40];
+		sprintf(buffer,"state:%d distance:%f m speed:%f cm/s\r\n",report_mode_one_status,g_Distance,g_fCarSpeed);
+		Uart1SendStr(buffer);
+		print_counter = 0;
+	}
+
 	switch(report_mode_one_status){
 		case FORWARD:{
 			if(g_Distance>0.9 && g_Distance < 1.1){
@@ -614,7 +624,7 @@ void ReportModeOneControl(void){
 				ResetReportOneTimer();
 				Steer(0,0);
 			} else {
-				Steer(0,1);
+				Steer(0,4);
 				current_speed = (g_speed_old + g_fCarSpeed)*0.5;
 				g_speed_old = g_fCarSpeed;
 				g_Distance += (current_speed*0.01) *0.02;
@@ -629,7 +639,7 @@ void ReportModeOneControl(void){
 				ResetReportOneTimer();
 				Steer(0,0);
 			} else {
-				Steer(0,-1);
+				Steer(0,-3);
 				current_speed = (g_speed_old + g_fCarSpeed)*0.5;
 				g_speed_old = g_fCarSpeed;
 				g_Distance += (current_speed*0.01) *0.02;				
@@ -637,10 +647,14 @@ void ReportModeOneControl(void){
 			break;
 		}
 		case LEFT_TURN:{
-			Steer(6,1);
-			g_iLeftTurnRoundCnt = -750;
-			g_iRightTurnRoundCnt = 750;
-			if((g_iLeftTurnRoundCnt > 0 ) && (g_iRightTurnRoundCnt < 0)){
+			if(left_turn_start == 1){
+				Steer(-5,0);
+				// g_iLeftTurnRoundCnt = -750;
+				g_iRightTurnRoundCnt = 1500;
+				left_turn_start = 0;
+			}
+
+			if(g_iRightTurnRoundCnt < 0){
 				report_mode_one_status = LEFT_TURN_STOP;
 				ResetReportOneTimer();
 				Steer(0,0);
@@ -648,10 +662,13 @@ void ReportModeOneControl(void){
 			break;
 		}
 		case RIGHT_TURN:{
-			Steer(-6,1);
-			g_iLeftTurnRoundCnt = 750;
-			g_iRightTurnRoundCnt = -750;
-			if((g_iLeftTurnRoundCnt < 0 ) && (g_iRightTurnRoundCnt > 0)){
+			if(right_turn_start == 1){
+				Steer(5,0);
+				g_iLeftTurnRoundCnt = 1500;
+				// g_iRightTurnRoundCnt = -750;
+				right_turn_start = 0;
+			}
+			if(g_iLeftTurnRoundCnt < 0){
 				report_mode_one_status = RIGHT_TURN_STOP;
 				ResetReportOneTimer();
 				Steer(0,0);
@@ -730,7 +747,7 @@ void ReportModeTwoControl(){
 
 		#if INFRARE_DEBUG_EN > 0
 			sprintf(buff, "Steer:%d, Speed:%d\r\n",(int)direct,  (int)speed);
-			DebugOutStr(buff);
+			// DebugOutStr(buff);
 		#endif
 	}
 

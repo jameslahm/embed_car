@@ -69,6 +69,8 @@ int main(void)
 		if(SoftTimer[1] == 0)
 		{// 每隔20ms 执行一次
 			SoftTimer[1] = 20;
+			// uncomment below if you want to debug with bluetooth
+
 			ResponseIMU();			
 			DebugService();			
 			Parse(Uart3Buffer);
