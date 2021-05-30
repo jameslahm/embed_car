@@ -1,12 +1,12 @@
 /**********************************************************************
-°æÈ¨ËùÓÐ£º	ß÷ÎØ´´ÐÂ¿Æ¼¼£¬2017.
-¹Ù		Íø£º	http://www.miaowlabs.com
-ÌÔ		±¦£º	https://shop275516297.taobao.com/
-ÎÄ ¼þ Ãû: 	communicate.c
-×÷    Õß:   ß÷ÎØÊµÑéÊÒ
-°æ		±¾:   3.00
-Íê³ÉÈÕÆÚ:   2017.03.01
-¸Å		Òª: 	
+ï¿½ï¿½È¨ï¿½ï¿½ï¿½Ð£ï¿½	ï¿½ï¿½ï¿½Ø´ï¿½ï¿½Â¿Æ¼ï¿½ï¿½ï¿½2017.
+ï¿½ï¿½		ï¿½ï¿½ï¿½ï¿½	http://www.miaowlabs.com
+ï¿½ï¿½		ï¿½ï¿½ï¿½ï¿½	https://shop275516297.taobao.com/
+ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½: 	communicate.c
+ï¿½ï¿½    ï¿½ï¿½:   ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½		ï¿½ï¿½:   3.00
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:   2017.03.01
+ï¿½ï¿½		Òª: 	
 
 
 ***********************************************************************/
@@ -26,7 +26,7 @@
 char StatusFlag=0;
 
 /*
-	ÉÏ±¨×ËÌ¬Êý¾Ý
+	ï¿½Ï±ï¿½ï¿½ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½
 */
 void ResponseIMU(void)
 {
@@ -35,11 +35,11 @@ void ResponseIMU(void)
 		g_fGravityAngle+180,
 		g_fGyroAngleSpeed+180,
 		g_fCarAngle+180);
-	BluetoothOut(temp);
+	// BluetoothOut(temp);
 }
 
 /*
-	ÉÏ±¨PIDÖµ
+	ï¿½Ï±ï¿½PIDÖµ
 */
 void ResponsePID(PIDType type)
 {
@@ -54,11 +54,11 @@ void ResponsePID(PIDType type)
 		g_tCarSpeedPID.P,
 		g_tCarSpeedPID.I,
 		g_tCarSpeedPID.D);
-	BluetoothOut(temp);
+	// BluetoothOut(temp);
 }
 
 /*
-	ÉÏ±¨°æ±¾ÐÅÏ¢
+	ï¿½Ï±ï¿½ï¿½æ±¾ï¿½ï¿½Ï¢
 */
 void ResponseInfo(void)
 {
@@ -67,12 +67,12 @@ void ResponseInfo(void)
 		FirmwareVer,
 		EEPROMVer,
 		MCUVer);
-	BluetoothOut(temp);
+	// BluetoothOut(temp);
 }
 
 
 /*
-	ÉÏ±¨×´Ì¬ÐÅÏ¢
+	ï¿½Ï±ï¿½×´Ì¬ï¿½ï¿½Ï¢
 */
 void ResponseStatus(void)
 {
@@ -80,13 +80,13 @@ void ResponseStatus(void)
 	sprintf(temp, "R,%d,%d\r\n", 
 		g_BatVolt*10,
 		g_RunTime);
-	BluetoothOut(temp);
+	// BluetoothOut(temp);
 }
 
 /*
-	APPÊý¾Ý½âÎöº¯Êý
-	Ð­Òé¹æ·¶:Ö¡Í·+³¤¶È+ÄÚÈÝ+Ð£Ñé
-	Èç:#17,CM,-27.314,-5.716*56;  Ö¡Í·# ³¤¶È17  ÄÚÈÝCM,-27.314,-5.716 Ð£Ñé56£¬³¤¶ÈÎªÄÚÈÝ×Ö½ÚÊý
+	APPï¿½ï¿½ï¿½Ý½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	Ð­ï¿½ï¿½æ·¶:Ö¡Í·+ï¿½ï¿½ï¿½ï¿½+ï¿½ï¿½ï¿½ï¿½+Ð£ï¿½ï¿½
+	ï¿½ï¿½:#17,CM,-27.314,-5.716*56;  Ö¡Í·# ï¿½ï¿½ï¿½ï¿½17  ï¿½ï¿½ï¿½ï¿½CM,-27.314,-5.716 Ð£ï¿½ï¿½56ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½Ö½ï¿½ï¿½ï¿½
 */
 void Parse(char *dataInput)
 {
@@ -105,7 +105,7 @@ void Parse(char *dataInput)
 		if(*p == '#')// 
 		{
 			len = (unsigned char)atof(strtok(p+1, ","));//length of data
-			if((len>0)&&(len<100))//³¤¶È´óÓÚ100µÄÊý¾ÝºöÂÔ
+			if((len>0)&&(len<100))//ï¿½ï¿½ï¿½È´ï¿½ï¿½ï¿½100ï¿½ï¿½ï¿½ï¿½ï¿½Ýºï¿½ï¿½ï¿½
 			{
 				if(len<10){
 					check = (unsigned char)atof(strtok(p+len+4, ";"));
@@ -117,17 +117,17 @@ void Parse(char *dataInput)
 					ret = XOR_Check(p+4, len, check);
 					p += 4;
 				}
-				if(ret){//  Ð£ÑéÕýÈ·£¬¿ªÊ¼½âÎöÊý¾Ý
+				if(ret){//  Ð£ï¿½ï¿½ï¿½ï¿½È·ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 					if(g_CarRunningMode == CONTROL_MODE)
 					{
 						if(strstr(p , "CS")){Steer(0, 0);}//Í£Ö¹
-						else if(strstr(p, "CJ")){// Ò¡¸Ë¿ØÖÆ
+						else if(strstr(p, "CJ")){// Ò¡ï¿½Ë¿ï¿½ï¿½ï¿½
 							strtok(p, ",");
-							fTemp1= atof(strtok(NULL,","));	// XÖá×ø±ê
-							fTemp2 = atof(strtok(NULL,"*"));// YÖá×ø±ê
+							fTemp1= atof(strtok(NULL,","));	// Xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+							fTemp2 = atof(strtok(NULL,"*"));// Yï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 							Steer(fTemp1 * 10, fTemp2 * 10);
 						}
-						else if(strstr(p, "CM")){//ÖØÁ¦¸ÐÓ¦¿ØÖÆ
+						else if(strstr(p, "CM")){//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½
 							strtok(p, ",");
 							fTemp1 = atof(strtok(NULL, ",")); 		// Pitch
 	      						fTemp2 = atof(strtok(NULL, "*")); 	// Roll
@@ -135,21 +135,21 @@ void Parse(char *dataInput)
 						}
 					}
 					
-					if(strstr(p,"SNK")){// ÉèÖÃÎªÆÕÍ¨Ò£¿ØÄ£Ê½
+					if(strstr(p,"SNK")){// ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½Í¨Ò£ï¿½ï¿½Ä£Ê½
 						g_CarRunningMode = CONTROL_MODE;
 					}
-					else if(strstr(p,"SUF")){// ÉèÖÃÎª³¬Éù²¨¸úËæÄ£Ê½
+					else if(strstr(p,"SUF")){// ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£Ê½
 						g_CarRunningMode = ULTRA_FOLLOW_MODE;
 					}
-					else if(strstr(p,"SUA")){// ÉèÖÃÎª³¬Éù²¨±ÜÕÏÄ£Ê½
+					else if(strstr(p,"SUA")){// ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£Ê½
 						g_CarRunningMode = ULTRA_AVOID_MODE;
 						Steer(0, 5);
 					}
-					else if(strstr(p,"SIT")){// ÉèÖÃÎªºìÍâÑ°¼£Ä£Ê½
+					else if(strstr(p,"SIT")){// ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½Ñ°ï¿½ï¿½Ä£Ê½
 						g_CarRunningMode = INFRARED_TRACE_MODE;
 					}
 					
-					else if(strstr(p,"SAP")){// ÉèÖÃ½Ç¶È»·PID
+					else if(strstr(p,"SAP")){// ï¿½ï¿½ï¿½Ã½Ç¶È»ï¿½PID
 						strtok(p, ",");
 						g_tCarAnglePID.P = atof(strtok(NULL,","));
 						g_tCarAnglePID.I = atof(strtok(NULL,","));
@@ -157,7 +157,7 @@ void Parse(char *dataInput)
 						PIDWrite(AnglePID);
 						ResponsePID(AnglePID);
 					}
-					else if(strstr(p,"SSP")){// ÉèÖÃËÙ¶È»·PID
+					else if(strstr(p,"SSP")){// ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶È»ï¿½PID
 						strtok(p, ",");
 						g_tCarSpeedPID.P = atof(strtok(NULL,","));
 						g_tCarSpeedPID.I = atof(strtok(NULL,","));
@@ -165,25 +165,25 @@ void Parse(char *dataInput)
 						PIDWrite(SpeedPID);
 						ResponsePID(SpeedPID);
 					}
-					else if(strstr(p, "GAP")){//²éÑ¯½Ç¶È»·PID
+					else if(strstr(p, "GAP")){//ï¿½ï¿½Ñ¯ï¿½Ç¶È»ï¿½PID
 						ResponsePID(AnglePID);
 					}
-					else if(strstr(p, "GSP")){//²éÑ¯ËÙ¶È»·PID
+					else if(strstr(p, "GSP")){//ï¿½ï¿½Ñ¯ï¿½Ù¶È»ï¿½PID
 						ResponsePID(SpeedPID);
 					}
-					else if(strstr(p,"RA")){// ½Ç¶È»·pid»Ö¸´Ä¬ÈÏÖµ
+					else if(strstr(p,"RA")){// ï¿½Ç¶È»ï¿½pidï¿½Ö¸ï¿½Ä¬ï¿½ï¿½Öµ
 						PIDReset(AnglePID);
 						ResponsePID(AnglePID);
 					}
-					else if(strstr(p,"RV")){//ËÙ¶È»·pid»Ö¸´Ä¬ÈÏÖµ
+					else if(strstr(p,"RV")){//ï¿½Ù¶È»ï¿½pidï¿½Ö¸ï¿½Ä¬ï¿½ï¿½Öµ
 						PIDReset(SpeedPID);
 						ResponsePID(SpeedPID);
 					}
-					else if(strstr(p,"RB")){//²éÑ¯°æ±¾¼°¿ªÆô×´Ì¬ÉÏ±¨ÐÅÏ¢
+					else if(strstr(p,"RB")){//ï¿½ï¿½Ñ¯ï¿½æ±¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½Ï±ï¿½ï¿½ï¿½Ï¢
 						StatusFlag = 1;
 						ResponseInfo();
 					}
-					else if(strstr(p,"RS")){//¹Ø±Õ×´Ì¬ÉÏ±¨
+					else if(strstr(p,"RS")){//ï¿½Ø±ï¿½×´Ì¬ï¿½Ï±ï¿½
 						StatusFlag = 0;
 					}
 				}

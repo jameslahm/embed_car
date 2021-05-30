@@ -608,9 +608,9 @@ void ReportModeOneControl(void){
 	float current_speed;	
 
 	print_counter ++;
-	if(print_counter >= 25){
-		char buffer[40];
-		sprintf(buffer,"state:%d distance:%f m speed:%f cm/s\r\n",report_mode_one_status,g_Distance,g_fCarSpeed);
+	if(print_counter >= 0){
+		char buffer[60];
+		sprintf(buffer,"state:%d distance:%f m speed:%f cm/s direction:%f \r\n",report_mode_one_status,g_Distance,g_fCarSpeed,g_fBluetoothDirection);
 		Uart1SendStr(buffer);
 		print_counter = 0;
 	}
@@ -648,9 +648,9 @@ void ReportModeOneControl(void){
 		}
 		case LEFT_TURN:{
 			if(left_turn_start == 1){
-				Steer(-5,0);
+				Steer(-1,4);
 				// g_iLeftTurnRoundCnt = -750;
-				g_iRightTurnRoundCnt = 1500;
+				g_iRightTurnRoundCnt = 5000;
 				left_turn_start = 0;
 			}
 
@@ -663,8 +663,8 @@ void ReportModeOneControl(void){
 		}
 		case RIGHT_TURN:{
 			if(right_turn_start == 1){
-				Steer(5,0);
-				g_iLeftTurnRoundCnt = 1500;
+				Steer(1,4);
+				g_iLeftTurnRoundCnt = 5000;
 				// g_iRightTurnRoundCnt = -750;
 				right_turn_start = 0;
 			}
