@@ -708,6 +708,8 @@ void ReportModeOneControl(void) {
 #define DISTANCE_FORWARD 0
 #define DISTANCE_BACKWARD 1
 #define DISTANCE_TURN 2
+#define FORCED_BACKWARD 3
+#define FORCED_TURN 4
 
 int avoid_status = AVOID_FORWARD;
 int report_mode_two_status = AVOID;
@@ -722,6 +724,8 @@ int distance_old = 0;
 // int leq_0 = 1;
 // int geq_180 = 0;
 int distance_status = DISTANCE_FORWARD;
+int backward_counter = 0;
+int turn_counter = 0;
 
 void ReportModeTwoControl() {
   // 首先寻迹进入赛道区
@@ -780,15 +784,40 @@ void ReportModeTwoControl() {
     Uart1SendStr(buffer);
     delta_distance = Distance - distance_old;
     distance_old = Distance;
-    if (delta_distance > 20 || delta_distance < -20){
+    if (distance_status == FORCED_BACKWARD){
+      if(backward_counter <= 25){
+        Steer(0,-4);
+        backward_counter ++;
+      }
+      else{
+        backward_counter = 0;
+        distance_status = FORCED_TURN;
+      }
+      return;
+    }
+    else if (distance_status == FORCED_TURN){
+      if(turn_counter <= 25){
+        Steer(current_direction*rotate_speed,0);
+        turn_counter ++;
+      }
+      else{
+        turn_counter = 0;
+        distance_status = DISTANCE_FORWARD;
+      }
+      return;
+    }
+    if (delta_distance > 30){
     }
     else{
-      if(Distance <= 10 || Distance > 100)
+      if(Distance <= 10 || Distance > 150)
         distance_status = DISTANCE_BACKWARD;
       else if (Distance >=20 && Distance < 30)
         distance_status = DISTANCE_TURN;
       else if (Distance >= 30)
-        distance_status = DISTANCE_FORWARD;
+        if (g_fGyroAngleSpeed_z > 70 || g_fGyroAngleSpeed_z <-70)
+          distance_status = FORCED_BACKWARD;
+        else
+          distance_status = DISTANCE_FORWARD;
     }
     if (distance_status == DISTANCE_BACKWARD){
       Steer(0,-3);
