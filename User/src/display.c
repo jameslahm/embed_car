@@ -1,12 +1,12 @@
 /**********************************************************************
-°æÈ¨ËùÓÐ£º	ß÷ÎØ´´ÐÂ¿Æ¼¼£¬2017.
-¹Ù		Íø£º	http://www.miaowlabs.com
-ÌÔ		±¦£º	https://miaowlabs.taobao.com/
-ÎÄ ¼þ Ãû: 	display.c
-×÷    Õß:   ß÷ÎØÊµÑéÊÒ
-°æ		±¾:   3.00
-Íê³ÉÈÕÆÚ:   2017.03.01
-¸Å		Òª: 	
+ï¿½ï¿½È¨ï¿½ï¿½ï¿½Ð£ï¿½	ï¿½ï¿½ï¿½Ø´ï¿½ï¿½Â¿Æ¼ï¿½ï¿½ï¿½2017.
+ï¿½ï¿½		ï¿½ï¿½ï¿½ï¿½	http://www.miaowlabs.com
+ï¿½ï¿½		ï¿½ï¿½ï¿½ï¿½	https://miaowlabs.taobao.com/
+ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½: 	display.c
+ï¿½ï¿½    ï¿½ï¿½:   ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½		ï¿½ï¿½:   3.00
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:   2017.03.01
+ï¿½ï¿½		Òª: 	
 
 
 ***********************************************************************/
@@ -26,37 +26,38 @@ extern unsigned short BatVol;
 
 
 /*
-	ÏÔÊ¾logo
+	ï¿½ï¿½Ê¾logo
 */
 void ShowHomePageInit(void)
 {
-	OLED_DrawBMP(0,0,128,8,LOGO);  //Í¼Æ¬ÏÔÊ¾
+	OLED_DrawBMP(0,0,128,8,LOGO);  //Í¼Æ¬ï¿½ï¿½Ê¾
 	delay_ms(1000);
 	OLED_Clear();
 }
 
 
 /*
-	oledÖ÷Ò³Ë¢ÐÂº¯Êý
-	·ÖÁù²½Ë¢ÐÂ£¬±ÜÃâÒ»´ÎË¢ÐÂÊ±¼ä¹ý³¤
+	oledï¿½ï¿½Ò³Ë¢ï¿½Âºï¿½ï¿½ï¿½
+	ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¢ï¿½Â£ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ë¢ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½
 */
 
 void ShowHomePage(void)
 {
-	unsigned char buff[32]={0};
+	unsigned char buff[48]={0};
 	static char step = 0;
 
 	step++;
 	if(step >= 6)step = 0;
 
-	//·Ö²½Ö´ÐÐ£¬Ëõ¶Ìµ¥´ÎË¢ÆÁÊ±¼ä
+	//ï¿½Ö²ï¿½Ö´ï¿½Ð£ï¿½ï¿½ï¿½ï¿½Ìµï¿½ï¿½ï¿½Ë¢ï¿½ï¿½Ê±ï¿½ï¿½
 	if(step == 0){
 		OLED_ShowString(0, 0, "Mode: Complementary  ");
 	}
 
 	if(step == 1){
-		if(IsUltraOK())
-			snprintf((char*)buff, 21,  "Distance:  %d(cm)       ", Distance);
+		if(IsUltraOK()){
+			snprintf((char*)buff, 21,  "Distance: %d %d", Distance,fixed_distance);
+		}
 		else
 			snprintf((char*)buff, 21,  "Distance:  %s(cm)       ", "xx");
 		

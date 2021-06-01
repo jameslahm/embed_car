@@ -38,7 +38,7 @@ float g_fSpeedControlOutNew;
 float g_fAngleControlOut;
 float g_fLeftMotorOut;
 float g_fRightMotorOut;
-
+float g_fxyAngleControlOut;
 /******速度控制参数******/
 
 short g_s16LeftMotorPulse;
@@ -57,6 +57,7 @@ float g_fCarPosition;
 /*-----角度环和速度环PID控制参数-----*/
 PID_t g_tCarAnglePID = {17.0, 0, 23.0};  //*5 /10
 PID_t g_tCarSpeedPID = {15.25, 1.08, 0}; // i/10
+PID_t g_txyAnglePID = {0,0,2.0};
 /******蓝牙控制参数******/
 float g_fBluetoothSpeed;
 float g_fBluetoothDirection;
@@ -78,6 +79,8 @@ static int AbnormalSpinFlag = 0;
 
 int g_fSpeedDelta = 0;
 int g_fForwardStatus = 1;
+float speed_old_2 = 0;
+
 /***************************************************************
 ** 函数名称: CarUpstandInit
 ** 功能描述: 全局变量初始化函数
@@ -285,10 +288,10 @@ void MotorOutput(void) {
       g_fAngleControlOut - g_fSpeedControlOut + g_fBluetoothDirection;;
   if (g_fForwardStatus == 1)
     g_fLeftMotorOut -= g_fSpeedDelta;
-    
-  // sprintf(buffer,"Left Voltage:%f,Right
-  // Voltage:%f,Direction:%f\r\n",g_fLeftMotorOut,g_fRightMotorOut,g_fBluetoothDirection);
-  // Uart1SendStr(buffer);
+  if (g_fForwardStatus == 1){
+    g_fLeftMotorOut += g_fxyAngleControlOut;
+    g_fRightMotorOut -= g_fxyAngleControlOut;
+  }
   /*增加死区常数*/
   if ((int)g_fLeftMotorOut > 0)
     g_fLeftMotorOut += MOTOR_OUT_DEAD_VAL;
@@ -379,6 +382,8 @@ void AngleControl(void) {
   g_fAngleControlOut =
       (CAR_ANGLE_SET - g_fCarAngle) * g_tCarAnglePID.P * 5 +
       (CAR_ANGLE_SPEED_SET - g_fGyroAngleSpeed) * (g_tCarAnglePID.D / 10);
+  // 角速度向右为负值 角度向右为正值
+  g_fxyAngleControlOut = (CAR_XY_ANGLE_SPEED_SET - g_fGyroAngleSpeed_z) * (g_tCarAnglePID.D /10);
 }
 
 /***************************************************************
@@ -395,10 +400,11 @@ void AngleControl(void) {
 void SpeedControl(void) {
   float fP, fI;
   float fDelta;
-  float fk = 0.0425;
+  float fk = 0.02;
+  speed_old_2 = g_fCarSpeed;
   g_fCarSpeed = (g_s32LeftMotorPulseSigma + g_s32RightMotorPulseSigma) * 0.5;
   g_fSpeedDelta = fk*(g_s32LeftMotorPulseSigma - g_s32RightMotorPulseSigma);
-
+  
   g_s32LeftMotorPulseSigma = g_s32RightMotorPulseSigma =
       0; //全局变量 注意及时清零
 
@@ -718,14 +724,19 @@ int left_one_start = 1;
 int right_two_start = 1;
 int left_two_start = 1;
 int current_direction = 1;
-int rotate_speed = 3;
+int rotate_speed = 1;
 int delta_distance = 0;
-int distance_old = 0;
+int distance_old = -1;
+int fixed_distance = 0;
 // int leq_0 = 1;
 // int geq_180 = 0;
 int distance_status = DISTANCE_FORWARD;
+int distance_status_old = DISTANCE_FORWARD;
 int backward_counter = 0;
 int turn_counter = 0;
+int stop_counter = 0;
+int finetune_counter = 0;
+float delta_speed = 0;
 
 void ReportModeTwoControl() {
   // 首先寻迹进入赛道区
@@ -742,7 +753,21 @@ void ReportModeTwoControl() {
   //   Steer(0, 0);
   //   return;
   // }
-
+  
+  if(distance_old == -1){
+    fixed_distance = Distance;
+    distance_old = Distance;
+  }
+  else if (Distance <= 400){
+    if (distance_status == DISTANCE_TURN || distance_status == FORCED_TURN){
+      distance_old = fixed_distance;
+      fixed_distance = Distance;
+    }
+    else{
+      distance_old = fixed_distance;
+      fixed_distance = 0.8 * distance_old + 0.2 * Distance;
+    }
+  }
   if (report_mode_two_status == TRACE) {
 #if INFRARE_DEBUG_EN > 0
     char buff[32];
@@ -780,10 +805,14 @@ void ReportModeTwoControl() {
   // 进入避障区
   if (report_mode_two_status == AVOID){
     char buffer[40];
-    sprintf(buffer,"xy angle:%f angle speed:%f\r\n direction:%d",-g_fxyAngle,g_fGyroAngleSpeed_z,current_direction);
+    sprintf(buffer,"status:%d distance:%d speed:%.3f ",distance_status,fixed_distance,g_fCarSpeed);
     Uart1SendStr(buffer);
-    delta_distance = Distance - distance_old;
-    distance_old = Distance;
+    delta_distance = fixed_distance - distance_old;
+    distance_old = fixed_distance;
+    delta_speed = g_fCarSpeed - speed_old_2;
+    if (delta_speed <= -8 && distance_status == DISTANCE_FORWARD){
+      distance_status = FORCED_BACKWARD;
+    }
     if (distance_status == FORCED_BACKWARD){
       if(backward_counter <= 25){
         Steer(0,-4);
@@ -791,36 +820,53 @@ void ReportModeTwoControl() {
       }
       else{
         backward_counter = 0;
+        distance_status_old = distance_status;
         distance_status = FORCED_TURN;
       }
       return;
     }
     else if (distance_status == FORCED_TURN){
       if(turn_counter <= 25){
+        if (90 + g_fxyAngle <= 0 && current_direction == 1){
+          current_direction = -current_direction;
+        }
+        if(90 + g_fxyAngle >= 180 && current_direction == -1){
+          current_direction = -current_direction;
+        }
         Steer(current_direction*rotate_speed,0);
         turn_counter ++;
       }
       else{
         turn_counter = 0;
+        distance_status_old = distance_status;
         distance_status = DISTANCE_FORWARD;
       }
       return;
     }
-    if (delta_distance > 30){
+    if (delta_distance > 25){
     }
     else{
-      if(Distance <= 10 || Distance > 150)
+      if(fixed_distance <= 10 || fixed_distance > 500)
         distance_status = DISTANCE_BACKWARD;
-      else if (Distance >=20 && Distance < 30)
+      else if (fixed_distance >=20 && fixed_distance < 30)
         distance_status = DISTANCE_TURN;
-      else if (Distance >= 30)
-        if (g_fGyroAngleSpeed_z > 70 || g_fGyroAngleSpeed_z <-70)
+      else if (fixed_distance >= 30){
+        if (g_fCarSpeed <=3)
+          stop_counter ++;
+        else 
+          stop_counter = 0;
+        if ((g_fGyroAngleSpeed_z > 60 || g_fGyroAngleSpeed_z <-60)||stop_counter >=50){
           distance_status = FORCED_BACKWARD;
+          stop_counter = 0;
+        }
         else
           distance_status = DISTANCE_FORWARD;
     }
+    }
+
     if (distance_status == DISTANCE_BACKWARD){
-      Steer(0,-3);
+      Steer(0,-4);
+      distance_status_old = distance_status;
     }
     else if (distance_status == DISTANCE_TURN){
       float angle = 90 + g_fxyAngle;
@@ -830,11 +876,32 @@ void ReportModeTwoControl() {
       if(angle >= 180 && current_direction == -1){
         current_direction = -current_direction;
       }
-      Steer(current_direction * rotate_speed,0);  
+      Steer(current_direction * rotate_speed,0);
+      distance_status_old = distance_status;  
     }
     else {
-      Steer(0,4);
+      if (distance_status_old == DISTANCE_TURN){
+        if (finetune_counter <= 12){
+          float angle = 90 + g_fxyAngle;
+          if (angle <= 0 && current_direction == 1){
+            current_direction = -current_direction;
+          }
+          if(angle >= 180 && current_direction == -1){
+            current_direction = -current_direction;
+          }          
+          Steer(current_direction *rotate_speed,0);
+          finetune_counter ++;
+        }
+        else{
+          finetune_counter = 0;
+          distance_status_old = distance_status;
+        }
+      }
+      else{
+        Steer(0,4);
+      }
     }
+    
   }
   // // 进入避障区
   // if (report_mode_two_status == AVOID) {
