@@ -48,7 +48,6 @@ void InfraredIOInit(void)
 char InfraredDetect(void)
 {
 	char resut = 0;
-
 	if(Lc)
 		resut |= infrared_channel_Lc;
 	if(Lb)

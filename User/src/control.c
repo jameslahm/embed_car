@@ -57,7 +57,7 @@ float g_fCarPosition;
 /*-----角度环和速度环PID控制参数-----*/
 PID_t g_tCarAnglePID = {17.0, 0, 23.0};  //*5 /10
 PID_t g_tCarSpeedPID = {15.25, 1.08, 0}; // i/10
-PID_t g_txyAnglePID = {0, 0, 2.0};
+PID_t g_txyAnglePID = {0, 0, 30.0};
 /******蓝牙控制参数******/
 float g_fBluetoothSpeed;
 float g_fBluetoothDirection;
@@ -325,8 +325,8 @@ void MotorOutput(void)
   g_fRightMotorOut =
       g_fAngleControlOut - g_fSpeedControlOut + g_fBluetoothDirection;
   ;
-  if (g_fForwardStatus == 1)
-    g_fLeftMotorOut -= g_fSpeedDelta;
+  // if (g_fForwardStatus == 1)
+  //   g_fLeftMotorOut -= g_fSpeedDelta;
   if (g_fForwardStatus == 1)
   {
     g_fLeftMotorOut += g_fxyAngleControlOut;
@@ -424,7 +424,7 @@ void AngleControl(void)
       (CAR_ANGLE_SET - g_fCarAngle) * g_tCarAnglePID.P * 5 +
       (CAR_ANGLE_SPEED_SET - g_fGyroAngleSpeed) * (g_tCarAnglePID.D / 10);
   // 角速度向右为负值 角度向右为正值
-  g_fxyAngleControlOut = (CAR_XY_ANGLE_SPEED_SET - g_fGyroAngleSpeed_z) * (g_tCarAnglePID.D / 10);
+  g_fxyAngleControlOut = (CAR_XY_ANGLE_SPEED_SET - g_fGyroAngleSpeed_z) * (g_txyAnglePID.D / 10);
 }
 
 /***************************************************************
@@ -684,7 +684,7 @@ void ReportModeOneControl(void)
   {
   case FORWARD:
   {
-    if (g_Distance > 1.1)
+    if (g_Distance > 1.3)
     {
       report_mode_one_status = FORWARD_STOP;
       g_Distance = 0;
@@ -703,7 +703,7 @@ void ReportModeOneControl(void)
   }
   case BACK:
   {
-    if (g_Distance < -1.1)
+    if (g_Distance < -1.3)
     {
       report_mode_one_status = BACK_STOP;
       g_Distance = 0;
@@ -835,6 +835,7 @@ void ReportModeTwoControl()
   // 首先寻迹进入赛道区
 
   char result;
+  char buffer[40];
 
   result = InfraredDetect();
   if ((result & infrared_channel_La) && (result & infrared_channel_Ra) && (result & infrared_channel_Lb) && (result & infrared_channel_Rb) && (result & infrared_channel_Lc) && (result & infrared_channel_Rc))
@@ -845,7 +846,7 @@ void ReportModeTwoControl()
     }
     else if (report_mode_two_status == AVOID)
     {
-      report_mode_two_status = STOP;
+      // report_mode_two_status = STOP;
     }
   }
 
@@ -854,7 +855,7 @@ void ReportModeTwoControl()
     float direct = 0;
     float speed = 0;
 
-    speed = 3;
+    speed = 2;
 
     //if (result & infrared_channel_Lc)
     // direct = -10;
@@ -862,7 +863,7 @@ void ReportModeTwoControl()
     // direct = 0;
     if (result & infrared_channel_La)
       direct = -4;
-    //else if (result & infrared_channel_Rc)
+    // else if (result & infrared_channel_Rc)
     // direct = 10;
     // else if (result & infrared_channel_Rb)
     // direct = 6;
@@ -909,7 +910,7 @@ void ReportModeTwoControl()
         fixed_distance = 0.8 * distance_old + 0.2 * Distance;
       }
     }
-    char buffer[40];
+    
     sprintf(buffer, "status:%d distance:%d speed:%.3f ", distance_status, fixed_distance, g_fCarSpeed);
     Uart1SendStr(buffer);
     delta_distance = fixed_distance - distance_old;
@@ -921,7 +922,7 @@ void ReportModeTwoControl()
     }
     if (distance_status == FORCED_BACKWARD)
     {
-      if (backward_counter <= 25)
+      if (backward_counter <= 50)
       {
         Steer(0, -4);
         backward_counter++;
@@ -936,7 +937,7 @@ void ReportModeTwoControl()
     }
     else if (distance_status == FORCED_TURN)
     {
-      if (turn_counter <= 25)
+      if (turn_counter <= 50)
       {
         if (90 + g_fxyAngle <= 0 && current_direction == 1)
         {
@@ -1005,7 +1006,7 @@ void ReportModeTwoControl()
     {
       if (distance_status_old == DISTANCE_TURN)
       {
-        if (finetune_counter <= 12)
+        if (finetune_counter <= 24)
         {
           float angle = 90 + g_fxyAngle;
           if (angle <= 0 && current_direction == 1)
