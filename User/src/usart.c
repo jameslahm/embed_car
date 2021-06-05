@@ -126,7 +126,7 @@ void Uart1SendStr(char *str)
 
 void Uart3SendByte( char byte)   //串口发送一个字节
 {
-  USART_SendData(USART3, byte);        //通过库函数  发送数据
+  USART_SendData(USART3, byte);  //通过库函数  发送数据
   while( USART_GetFlagStatus(USART3,USART_FLAG_TC)!= SET);  
 }
 

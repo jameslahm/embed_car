@@ -521,23 +521,27 @@ void TailingControl(void) {
   float speed = 0;
 
   result = InfraredDetect();
+	
+	speed = 3;
 
-  if (result & infrared_channel_Lc)
-    direct = -10;
-//   else if (result & infrared_channel_Lb)
-//     direct = -6;
+	if((result & infrared_channel_La) && (result & infrared_channel_Ra) 
+		&& (result & infrared_channel_Lb) && (result & infrared_channel_Rb)){
+		speed = 0;
+	}
+  //if (result & infrared_channel_Lc)
+   // direct = -10;
+  // if (result & infrared_channel_Lb)
+    // direct = 0;
   else if (result & infrared_channel_La)
     direct = -4;
-  else if (result & infrared_channel_Rc)
-    direct = 10;
-//   else if (result & infrared_channel_Rb)
-//     direct = 6;
+  //else if (result & infrared_channel_Rc)
+   // direct = 10;
+  // else if (result & infrared_channel_Rb)
+    // direct = 6;
   else if (result & infrared_channel_Ra)
     direct = 4;
   else
     direct = 0.0;
-
-  speed = 3;
 
   Steer(direct, speed);
 
@@ -586,7 +590,7 @@ void ReportModeOneControl(void) {
 
   switch (report_mode_one_status) {
   case FORWARD: {
-    if (g_Distance > 0.9 && g_Distance < 1.1) {
+    if (g_Distance > 1.1) {
       report_mode_one_status = FORWARD_STOP;
       g_Distance = 0;
       g_speed_old = 0;
@@ -601,7 +605,7 @@ void ReportModeOneControl(void) {
     break;
   }
   case BACK: {
-    if (g_Distance < -0.9 && g_Distance > -1.1) {
+    if (g_Distance < -1.1) {
       report_mode_one_status = BACK_STOP;
       g_Distance = 0;
       g_speed_old = 0;
@@ -669,6 +673,7 @@ void ReportModeOneControl(void) {
 #define TRACE 0
 #define AVOID 1
 #define STOP 2
+#define AVOID_BARRIAR 3
 
 #define AVOID_FORWARD 0
 #define AVOID_RIGHT_ONE 1
@@ -680,61 +685,61 @@ void ReportModeOneControl(void) {
 #define AVOID_RIGHT_TWO 7
 
 int avoid_status = AVOID_FORWARD;
-int report_mode_two_status = AVOID;
+int report_mode_two_status = TRACE;
 int right_one_start = 1;
 int left_one_start = 1;
 int right_two_start = 1;
 int left_two_start = 1;
+int left_barriar_counter = 80;
 
 void ReportModeTwoControl() {
   // 首先寻迹进入赛道区
 
   char result;
-	// char buffer[20];
-  // result = InfraredDetect();
-  // sprintf(buffer,"result:%d",result);
-  // Uart1SendStr(buffer);
-  // if (result ==
-  //     (infrared_channel_La | infrared_channel_Lc |
-  //      infrared_channel_Ra | infrared_channel_Rc)) {
-  //   report_mode_two_status = STOP;
-  //   Steer(0, 0);
-  //   return;
-  // }
+	result = InfraredDetect();
+	if((result & infrared_channel_La) && (result & infrared_channel_Ra) 
+			&& (result & infrared_channel_Lb) && (result & infrared_channel_Rb)
+			&& (result & infrared_channel_Lc) && (result & infrared_channel_Rc)){
+			if(report_mode_two_status == TRACE){
+				report_mode_two_status = AVOID_BARRIAR;
+			} else if(report_mode_two_status== AVOID) {	
+				report_mode_two_status = STOP;
+			}
+		}
+	
 
   if (report_mode_two_status == TRACE) {
-#if INFRARE_DEBUG_EN > 0
-    char buff[32];
-#endif
-    float direct = 0;
-    float speed = 0;
+		float direct = 0;
+		float speed = 0;
 
-    if (result & infrared_channel_Lc)
-      direct = -10;
-    // else if (result & infrared_channel_Lb)
-    //   direct = -6;
-    else if (result & infrared_channel_La)
-      direct = -4;
-    else if (result & infrared_channel_Rc)
-      direct = 10;
-    // else if (result & infrared_channel_Rb)
-    //   direct = 6;
-    else if (result & infrared_channel_Ra)
-      direct = 4;
-    else {
-      direct = 0.0;
-      report_mode_two_status = AVOID;
-    }
+		speed = 3;
+		
+		//if (result & infrared_channel_Lc)
+		 // direct = -10;
+		// if (result & infrared_channel_Lb)
+			// direct = 0;
+		if (result & infrared_channel_La)
+			direct = -4;
+		//else if (result & infrared_channel_Rc)
+		 // direct = 10;
+		// else if (result & infrared_channel_Rb)
+			// direct = 6;
+		else if (result & infrared_channel_Ra)
+			direct = 4;
+		else
+			direct = 0.0;
 
-    speed = 3;
-
-    Steer(direct, speed);
-
-#if INFRARE_DEBUG_EN > 0
-    sprintf(buff, "Steer:%d, Speed:%d\r\n", (int)direct, (int)speed);
-    // DebugOutStr(buff);
-#endif
+		Steer(direct, speed);
   }
+	
+	if(report_mode_two_status==AVOID_BARRIAR){
+		if(left_barriar_counter>=0){
+			Steer(0,4);
+			left_barriar_counter--;
+		} else {
+			report_mode_two_status = AVOID;
+		}
+	}
 
   // 进入避障区
   if (report_mode_two_status == AVOID) {
@@ -828,5 +833,9 @@ void ReportModeTwoControl() {
     }
     }
   }
+	
+	if(report_mode_two_status==STOP){
+		Steer(0,0);
+	}
   //
 }
