@@ -808,6 +808,10 @@ void ReportModeOneControl(void)
 #define FORCED_BACKWARD 3
 #define FORCED_TURN 4
 
+float abs(float a){
+  return a>0 ? a:-a;
+}
+
 int avoid_status = AVOID_FORWARD;
 int report_mode_two_status = TRACE;
 int right_one_start = 1;
@@ -815,7 +819,7 @@ int left_one_start = 1;
 int right_two_start = 1;
 int left_two_start = 1;
 int current_direction = 1;
-int rotate_speed = 1;
+int rotate_speed = 3;
 int delta_distance = 0;
 int distance_old = -1;
 int fixed_distance = 0;
@@ -916,7 +920,7 @@ void ReportModeTwoControl()
     delta_distance = fixed_distance - distance_old;
     distance_old = fixed_distance;
     delta_speed = g_fCarSpeed - speed_old_2;
-    if (delta_speed <= -8 && distance_status == DISTANCE_FORWARD)
+    if (delta_speed <= -12 && distance_status == DISTANCE_FORWARD)
     {
       distance_status = FORCED_BACKWARD;
     }
@@ -963,17 +967,18 @@ void ReportModeTwoControl()
     }
     else
     {
-      if (fixed_distance <= 10 || fixed_distance > 500)
+      int is_direct = (abs(g_fxyAngle + 90) < 5 || abs(g_fxyAngle - 90) < 5 || abs(g_fxyAngle) < 5);
+      if (fixed_distance <= 5 || fixed_distance > 500)
         distance_status = DISTANCE_BACKWARD;
-      else if (fixed_distance >= 20 && fixed_distance < 30)
+      else if ( (fixed_distance >= 5 && fixed_distance < 15) || (!is_direct))
         distance_status = DISTANCE_TURN;
-      else if (fixed_distance >= 30)
+      else if ( is_direct && fixed_distance >= 15)
       {
-        if (g_fCarSpeed <= 3)
+        if (g_fCarSpeed <= 0)
           stop_counter++;
         else
           stop_counter = 0;
-        if ((g_fGyroAngleSpeed_z > 60 || g_fGyroAngleSpeed_z < -60) || stop_counter >= 50)
+        if (stop_counter >= 100)
         {
           distance_status = FORCED_BACKWARD;
           stop_counter = 0;
@@ -1006,7 +1011,7 @@ void ReportModeTwoControl()
     {
       if (distance_status_old == DISTANCE_TURN)
       {
-        if (finetune_counter <= 24)
+        if (finetune_counter < 0)
         {
           float angle = 90 + g_fxyAngle;
           if (angle <= 0 && current_direction == 1)
