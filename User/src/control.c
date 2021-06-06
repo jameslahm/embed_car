@@ -968,34 +968,7 @@ void ReportModeTwoControl()
       return;
     }
 
-    if (delta_distance > 25)
-    {
-
-    }
-    else
-    {
-      int is_direct = (abs(g_fxyAngle + 90) < 5 || abs(g_fxyAngle - 90) < 5 || abs(g_fxyAngle) < 5);
-      // TODO: test 500
-      if (fixed_distance <= 5 || fixed_distance > 500)
-        distance_status = DISTANCE_BACKWARD;
-      else if ( (fixed_distance >= 5 && fixed_distance < 15) || (!is_direct))
-        distance_status = DISTANCE_TURN;
-      else if ( is_direct && fixed_distance >= 15)
-      {
-        if (g_fCarSpeed <= 0)
-          stop_counter++;
-        else
-          stop_counter = 0;
-        if (stop_counter >= 100)
-        {
-          distance_status = FORCED_BACKWARD;
-          stop_counter = 0;
-        }
-        else
-          distance_status = DISTANCE_FORWARD;
-      }
-    }
-
+    //移到上面
     if (distance_status == DISTANCE_BACKWARD)
     {
       Steer(0, -4);
@@ -1044,6 +1017,38 @@ void ReportModeTwoControl()
         Steer(0, 4);
       }
     }
+
+
+
+    if (delta_distance > 25)
+    {
+
+    }
+    else
+    {
+      int is_direct = (abs(g_fxyAngle + 90) < 5 || abs(g_fxyAngle - 90) < 5 || abs(g_fxyAngle) < 5);
+      // TODO: test 500
+      if (fixed_distance <= 5 || fixed_distance > 500)
+        distance_status = DISTANCE_BACKWARD;
+      else if ( (fixed_distance >= 5 && fixed_distance < 15))// || (!is_direct))
+        distance_status = DISTANCE_TURN;
+      else if ( is_direct && fixed_distance >= 15)
+      {
+        if (g_fCarSpeed <= 0)
+          stop_counter++;
+        else
+          stop_counter = 0;
+        if (stop_counter >= 100)
+        {
+          distance_status = FORCED_BACKWARD;
+          stop_counter = 0;
+        }
+        else
+          distance_status = DISTANCE_FORWARD;
+      }
+    }
+
+    
   }
   // // 进入避障区
   // if (report_mode_two_status == AVOID) {
