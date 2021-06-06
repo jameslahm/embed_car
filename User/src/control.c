@@ -813,7 +813,7 @@ float abs(float a){
 }
 
 int avoid_status = AVOID_FORWARD;
-int report_mode_two_status = TRACE;
+int report_mode_two_status = AVOID;
 int right_one_start = 1;
 int left_one_start = 1;
 int right_two_start = 1;
@@ -837,12 +837,16 @@ int left_barriar_counter = 80;
 void ReportModeTwoControl()
 {
   // 首先寻迹进入赛道区
-
   char result;
   char buffer[40];
 
   result = InfraredDetect();
-  if ((result & infrared_channel_La) && (result & infrared_channel_Ra) && (result & infrared_channel_Lb) && (result & infrared_channel_Rb) && (result & infrared_channel_Lc) && (result & infrared_channel_Rc))
+  if ((result & infrared_channel_La) &&
+   (result & infrared_channel_Ra) && 
+   (result & infrared_channel_Lb) && 
+   (result & infrared_channel_Rb) && 
+   (result & infrared_channel_Lc) && 
+   (result & infrared_channel_Rc))
   {
     if (report_mode_two_status == TRACE)
     {
@@ -858,7 +862,6 @@ void ReportModeTwoControl()
   {
     float direct = 0;
     float speed = 0;
-
     speed = 2;
 
     //if (result & infrared_channel_Lc)
@@ -920,10 +923,12 @@ void ReportModeTwoControl()
     delta_distance = fixed_distance - distance_old;
     distance_old = fixed_distance;
     delta_speed = g_fCarSpeed - speed_old_2;
-    if (delta_speed <= -12 && distance_status == DISTANCE_FORWARD)
+
+    if (delta_speed <= -13 && distance_status == DISTANCE_FORWARD)
     {
       distance_status = FORCED_BACKWARD;
     }
+
     if (distance_status == FORCED_BACKWARD)
     {
       if (backward_counter <= 50)
@@ -962,12 +967,15 @@ void ReportModeTwoControl()
       }
       return;
     }
+
     if (delta_distance > 25)
     {
+
     }
     else
     {
       int is_direct = (abs(g_fxyAngle + 90) < 5 || abs(g_fxyAngle - 90) < 5 || abs(g_fxyAngle) < 5);
+      // TODO: test 500
       if (fixed_distance <= 5 || fixed_distance > 500)
         distance_status = DISTANCE_BACKWARD;
       else if ( (fixed_distance >= 5 && fixed_distance < 15) || (!is_direct))
@@ -1135,5 +1143,5 @@ void ReportModeTwoControl()
   {
     Steer(0, 0);
   }
-  //
+  
 }
