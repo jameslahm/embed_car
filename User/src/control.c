@@ -404,6 +404,7 @@ void AngleCalculate(void)
   g_fGyroAngleSpeed_z = g_fGyro_z;
   // g_fxyAngle = 0.98 * (g_fxyAngle + g_fGyroAngleSpeed_z * 0.005) - 0.02 * g_fYawAngle;
   g_fxyAngle = g_fxyAngle + g_fGyroAngleSpeed_z * 0.005;
+  //g_fxyAngle=g_fxyAngle+5;
 }
 
 /***************************************************************
@@ -446,6 +447,7 @@ void SpeedControl(void)
   speed_old_2 = g_fCarSpeed;
   g_fCarSpeed = (g_s32LeftMotorPulseSigma + g_s32RightMotorPulseSigma) * 0.5;
   g_fSpeedDelta = fk * (g_s32LeftMotorPulseSigma - g_s32RightMotorPulseSigma);
+  
 
   g_s32LeftMotorPulseSigma = g_s32RightMotorPulseSigma =
       0; //全局变量 注意及时清零
@@ -684,7 +686,7 @@ void ReportModeOneControl(void)
   {
   case FORWARD:
   {
-    if (g_Distance > 1.3)
+    if (g_Distance > 2)
     {
       report_mode_one_status = FORWARD_STOP;
       g_Distance = 0;
@@ -1026,11 +1028,21 @@ void ReportModeTwoControl()
     }
     else
     {
-      int is_direct = (abs(g_fxyAngle + 90) < 5 || abs(g_fxyAngle - 90) < 5 || abs(g_fxyAngle) < 5);
+      int is_direct=1;
+      float txy_Angle=g_fxyAngle;
+      //预处理
+      if(txy_Angle>0 && txy_Angle <5) 
+        txy_Angle=txy_Angle-3.5;
+
+      txy_Angle=txy_Angle+3.5;
+
+      is_direct= (abs(txy_Angle + 90) < 5 || abs(txy_Angle - 90) < 5 || abs(txy_Angle) < 6);
       // TODO: test 500
-      if (fixed_distance <= 5 || fixed_distance > 500)
+      //bug:起初一段时间fixed_distance=0；
+      if (fixed_distance!= 0 &&fixed_distance <= 5 || fixed_distance > 500)
         distance_status = DISTANCE_BACKWARD;
-      else if ( (fixed_distance >= 5 && fixed_distance < 15))// || (!is_direct))
+      else if ( (fixed_distance >= 5 && fixed_distance < 15)|| (!is_direct))
+      //( (fixed_distance >= 5 && fixed_distance < 15)|| (!is_direct))
         distance_status = DISTANCE_TURN;
       else if ( is_direct && fixed_distance >= 15)
       {
@@ -1049,7 +1061,7 @@ void ReportModeTwoControl()
     }
 
     
-  }
+  
   // // 进入避障区
   // if (report_mode_two_status == AVOID) {
   //   char buffer[40];
@@ -1143,10 +1155,13 @@ void ReportModeTwoControl()
   //   }
   // }
   // //
+  }
+
 
   if (report_mode_two_status == STOP)
   {
     Steer(0, 0);
   }
+  
   
 }
