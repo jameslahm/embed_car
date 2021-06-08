@@ -383,7 +383,7 @@ void AngleControl(void) {
       (CAR_ANGLE_SET - g_fCarAngle) * g_tCarAnglePID.P * 5 +
       (CAR_ANGLE_SPEED_SET - g_fGyroAngleSpeed) * (g_tCarAnglePID.D / 10);
   // 角速度向右为负值 角度向右为正值
-  g_fxyAngleControlOut = (CAR_XY_ANGLE_SPEED_SET - g_fGyroAngleSpeed_z) * (g_tCarAnglePID.D /10);
+  g_fxyAngleControlOut = (CAR_XY_ANGLE_SPEED_SET - g_fGyroAngleSpeed_z) * (g_txyAnglePID.D /10);
 }
 
 /***************************************************************
