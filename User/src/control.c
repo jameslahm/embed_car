@@ -57,7 +57,7 @@ float g_fCarPosition;
 /*-----�ǶȻ����ٶȻ�PID���Ʋ���-----*/
 PID_t g_tCarAnglePID = {17.0, 0, 23.0};  //*5 /10
 PID_t g_tCarSpeedPID = {15.25, 1.08, 0}; // i/10
-PID_t g_txyAnglePID = {0, 0, 30.0};
+PID_t g_txyAnglePID = {0, 0, 23.0};
 /******�������Ʋ���******/
 float g_fBluetoothSpeed;
 float g_fBluetoothDirection;
@@ -325,13 +325,13 @@ void MotorOutput(void)
   g_fRightMotorOut =
       g_fAngleControlOut - g_fSpeedControlOut + g_fBluetoothDirection;
   ;
-  if (g_fForwardStatus == 1)
-    g_fLeftMotorOut -= g_fSpeedDelta;
-  if (g_fForwardStatus == 1)
-  {
-    g_fLeftMotorOut += g_fxyAngleControlOut;
-    g_fRightMotorOut -= g_fxyAngleControlOut;
-  }
+  // if (g_fForwardStatus == 1)
+  //   g_fLeftMotorOut -= g_fSpeedDelta;
+  // if (g_fForwardStatus == 1)
+  // {
+  //   g_fLeftMotorOut += g_fxyAngleControlOut;
+  //   g_fRightMotorOut -= g_fxyAngleControlOut;
+  // }
   /*������������*/
   if ((int)g_fLeftMotorOut > 0)
     g_fLeftMotorOut += MOTOR_OUT_DEAD_VAL;
@@ -715,7 +715,7 @@ void ReportModeOneControl(void)
     }
     else
     {
-      Steer(0, -3);
+      Steer(0, -4);
       current_speed = (g_speed_old + g_fCarSpeed) * 0.5;
       g_speed_old = g_fCarSpeed;
       g_Distance += (current_speed * 0.01) * 0.02;

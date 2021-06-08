@@ -79,7 +79,7 @@ int main(void)
   	
 		if(SoftTimer[2] == 0)
 		{
-			SoftTimer[2] = 10;
+			SoftTimer[2] = 20;
 			ShowHomePage();
 	
 			Read_Distane();
