@@ -1,12 +1,12 @@
 /**********************************************************************
-°æÈ¨ËùÓÐ£º	ß÷ÎØ´´ÐÂ¿Æ¼¼£¬2017.
-¹Ù		Íø£º	http://www.miaowlabs.com
-ÌÔ		±¦£º	https://shop275516297.taobao.com/
-ÎÄ ¼þ Ãû: 	infrare.c
-×÷    Õß:   ß÷ÎØ´´ÐÂ
-°æ		±¾:   3.00
-Íê³ÉÈÕÆÚ:   2017.03.01
-¸Å		Òª: 	ºìÍâ¼ì²âÄ£¿é
+ï¿½ï¿½È¨ï¿½ï¿½ï¿½Ð£ï¿½	ï¿½ï¿½ï¿½Ø´ï¿½ï¿½Â¿Æ¼ï¿½ï¿½ï¿½2017.
+ï¿½ï¿½		ï¿½ï¿½ï¿½ï¿½	http://www.miaowlabs.com
+ï¿½ï¿½		ï¿½ï¿½ï¿½ï¿½	https://shop275516297.taobao.com/
+ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½: 	infrare.c
+ï¿½ï¿½    ï¿½ï¿½:   ï¿½ï¿½ï¿½Ø´ï¿½ï¿½ï¿½
+ï¿½ï¿½		ï¿½ï¿½:   3.00
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:   2017.03.01
+ï¿½ï¿½		Òª: 	ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½
 
 
 ***********************************************************************/
@@ -16,19 +16,22 @@
 
 
 #define La GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_5)
-#define Lb GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_4)
+
 #define Lc GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_3)
 #define Ra GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_15)
-#define Rb GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_12)
+
 #define Rc GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_8)
+
+#define Lb GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_4)
+#define Rb GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_12)
 
 void InfraredIOInit(void)
 {
 
 	GPIO_InitTypeDef GPIO_InitStructure;
 
- 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);  //Ê¹ÄÜGPIOBÊ±ÖÓ
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);  //Ê¹ÄÜGPIOBÊ±ÖÓ
+ 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);  //Ê¹ï¿½ï¿½GPIOBÊ±ï¿½ï¿½
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);  //Ê¹ï¿½ï¿½GPIOBÊ±ï¿½ï¿½
 
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; //PB0 ??
 
@@ -41,14 +44,13 @@ void InfraredIOInit(void)
 }
 
 /*
-	ËÄÍ¨µÀºìÍâÄ£¿é
-	result´Ó¸ßÎ»µ½µÍÎ»·Ö±ð±êÊ¶Í¨µÀLb¡¢La¡¢Ra¡¢Rb
-	¼ì²âµ½ºÚÏßµÄÍ¨µÀÏàÓ¦µÄÎ»ÖÃ1
+	ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½
+	resultï¿½Ó¸ï¿½Î»ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ö±ï¿½ï¿½Ê¶Í¨ï¿½ï¿½Lbï¿½ï¿½Laï¿½ï¿½Raï¿½ï¿½Rb
+	ï¿½ï¿½âµ½ï¿½ï¿½ï¿½ßµï¿½Í¨ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½Î»ï¿½ï¿½1
 */
 char InfraredDetect(void)
 {
 	char resut = 0;
-
 	if(Lc)
 		resut |= infrared_channel_Lc;
 	if(Lb)
@@ -76,7 +78,7 @@ void InfrareSelfCheck(void)
 //		if(Rb==1)cnt++;
 		if(Rc==1)cnt++;
 
-		if(cnt == 4)// Èç¹ûÃ¿¸öÍ¨µÀ¶¼ÊÇ¸ßµçÆ½£¬ÔòÅÐ¶ÏÎªºìÍâÄ£¿éÃ»ÓÐ½ÓÉÏ
+		if(cnt == 4)// ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½Ç¸ßµï¿½Æ½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½Îªï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½Ã»ï¿½Ð½ï¿½ï¿½ï¿½
 			InfrareError = 1;
 }
 

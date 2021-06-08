@@ -64,7 +64,7 @@ int main(void)
 	while (1)
 	{
 		
-		SecTask();			//秒级任务
+		SecTask();//秒级任务
 
 		if(SoftTimer[1] == 0)
 		{// 每隔20ms 执行一次
@@ -79,7 +79,7 @@ int main(void)
   	
 		if(SoftTimer[2] == 0)
 		{
-			SoftTimer[2] = 20;
+			SoftTimer[2] = 10;
 			ShowHomePage();
 	
 			Read_Distane();

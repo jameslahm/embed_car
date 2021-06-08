@@ -5,7 +5,7 @@
 �� �� ��: 	display.c
 ��    ��:   ����ʵ����
 ��		��:   3.00
-�������:   2017.03.01
+�������?:   2017.03.01
 ��		Ҫ: 	
 
 
@@ -23,7 +23,8 @@
 
 extern unsigned short BatVol;
 extern int report_mode_two_status;
-
+extern int distance_status;
+extern float g_fxyAngle;
 
 
 /*
@@ -39,7 +40,7 @@ void ShowHomePageInit(void)
 
 /*
 	oled��ҳˢ�º���
-	������ˢ�£�����һ��ˢ��ʱ�����
+	������ˢ�£�����һ��ˢ��ʱ�����?
 */
 
 void ShowHomePage(void)
@@ -56,11 +57,13 @@ void ShowHomePage(void)
 	}
 
 	if(step == 1){
-		if(IsUltraOK()){
-			snprintf((char*)buff, 21,  "Distance: %d %d", Distance,fixed_distance);
-		}
-		else
-			snprintf((char*)buff, 21,  "Distance:  %s(cm)       ", "xx");
+
+		snprintf((char*)buff, 21, "xy: %0.1f      ", g_fxyAngle);
+		// if(IsUltraOK()){
+		// 	snprintf((char*)buff, 21,  "D: %d,%d", Distance,fixed_distance);
+		// }
+		// else
+		// 	snprintf((char*)buff, 21,  "Distance:  %s(cm)       ", "xx");
 		
 		OLED_ShowString(0, 1, buff);
 	}
@@ -80,7 +83,7 @@ void ShowHomePage(void)
 	}
 	if(step == 5){
 		// snprintf((char*)buff, 21, "Battery:   %0.1f(V)      ", g_BatVolt/100.0);
-		snprintf((char*)buff, 21, "Status:   %d      ", report_mode_two_status);
+		snprintf((char*)buff, 21, "Status:   %d      ", distance_status);
 		// snprintf((char*)buff, 21, "Positio:   %0.1f(m)      ", g_fCarPosition/100.0);
 		OLED_ShowString(0, 5, buff);	
 		}
