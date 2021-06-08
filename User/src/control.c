@@ -1,12 +1,12 @@
 /**********************************************************************
-°æÈ¨ËùÓÐ£º	  ß÷ÎØÊµÑéÊÒMiaowLabs£¬2017.
-¹Ù		Íø£º	http://www.miaowlabs.com
-ÌÔ		±¦£º	https://miaowlabs.taobao.com/
-ÎÄ ¼þ Ãû: 	  control.c
-×÷    Õß:   ß÷ÎØÊµÑéÊÒMiaowLabs
-°æ		±¾:   3.00
-Íê³ÉÈÕÆÚ:   2017.03.01
-¸Å		Òª:
+ï¿½ï¿½È¨ï¿½ï¿½ï¿½Ð£ï¿½	  ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½MiaowLabsï¿½ï¿½2017.
+ï¿½ï¿½		ï¿½ï¿½ï¿½ï¿½	http://www.miaowlabs.com
+ï¿½ï¿½		ï¿½ï¿½ï¿½ï¿½	https://miaowlabs.taobao.com/
+ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½: 	  control.c
+ï¿½ï¿½    ï¿½ï¿½:   ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½MiaowLabs
+ï¿½ï¿½		ï¿½ï¿½:   3.00
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:   2017.03.01
+ï¿½ï¿½		Òª:
 
 
 ***********************************************************************/
@@ -27,11 +27,11 @@ unsigned char g_u8SpeedControlPeriod;
 unsigned char g_u8DirectionControlPeriod;
 unsigned char g_u8DirectionControlCount;
 
-unsigned char g_cMotorDisable = 0; //ÖµµÈÓÚ0Ê±µç»úÕý³£×ª¶¯£¬·ñÔòÍ£Ö¹×ª¶¯
+unsigned char g_cMotorDisable = 0; //Öµï¿½ï¿½ï¿½ï¿½0Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í£Ö¹×ªï¿½ï¿½
 
 int g_iGravity_Offset = 0;
 
-/******µç»ú¿ØÖÆ²ÎÊý******/
+/******ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ²ï¿½ï¿½ï¿½******/
 float g_fSpeedControlOut;
 float g_fSpeedControlOutOld;
 float g_fSpeedControlOutNew;
@@ -39,7 +39,7 @@ float g_fAngleControlOut;
 float g_fLeftMotorOut;
 float g_fRightMotorOut;
 float g_fxyAngleControlOut;
-/******ËÙ¶È¿ØÖÆ²ÎÊý******/
+/******ï¿½Ù¶È¿ï¿½ï¿½Æ²ï¿½ï¿½ï¿½******/
 
 short g_s16LeftMotorPulse;
 short g_s16RightMotorPulse;
@@ -54,11 +54,11 @@ float g_iCarSpeedSet;
 float g_fCarSpeedOld;
 float g_fCarPosition;
 
-/*-----½Ç¶È»·ºÍËÙ¶È»·PID¿ØÖÆ²ÎÊý-----*/
+/*-----ï¿½Ç¶È»ï¿½ï¿½ï¿½ï¿½Ù¶È»ï¿½PIDï¿½ï¿½ï¿½Æ²ï¿½ï¿½ï¿½-----*/
 PID_t g_tCarAnglePID = {17.0, 0, 23.0};  //*5 /10
 PID_t g_tCarSpeedPID = {15.25, 1.08, 0}; // i/10
-PID_t g_txyAnglePID = {0,0,2.0};
-/******À¶ÑÀ¿ØÖÆ²ÎÊý******/
+PID_t g_txyAnglePID = {0, 0, 2.0};
+/******ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ²ï¿½ï¿½ï¿½******/
 float g_fBluetoothSpeed;
 float g_fBluetoothDirection;
 float g_fBluetoothDirectionOld;
@@ -82,16 +82,17 @@ int g_fForwardStatus = 1;
 float speed_old_2 = 0;
 
 /***************************************************************
-** º¯ÊýÃû³Æ: CarUpstandInit
-** ¹¦ÄÜÃèÊö: È«¾Ö±äÁ¿³õÊ¼»¯º¯Êý
-** Êä¡¡Èë:
-** Êä¡¡³ö:
-** È«¾Ö±äÁ¿:
-** ×÷¡¡Õß:   ß÷ÎØÊµÑéÊÒMiaowLabs
-** ÌÔ  ±¦£º  https://miaowlabs.taobao.com/
-** ÈÕ¡¡ÆÚ:   2014Äê08ÔÂ01ÈÕ
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: CarUpstandInit
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: È«ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+** ï¿½ä¡¡ï¿½ï¿½:
+** ï¿½ä¡¡ï¿½ï¿½:
+** È«ï¿½Ö±ï¿½ï¿½ï¿½:
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:   ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½MiaowLabs
+** ï¿½ï¿½  ï¿½ï¿½ï¿½ï¿½  https://miaowlabs.taobao.com/
+** ï¿½Õ¡ï¿½ï¿½ï¿½:   2014ï¿½ï¿½08ï¿½ï¿½01ï¿½ï¿½
 ***************************************************************/
-void CarUpstandInit(void) {
+void CarUpstandInit(void)
+{
   // g_iAccelInputVoltage_X_Axis = g_iGyroInputVoltage_Y_Axis = 0;
   g_s16LeftMotorPulse = g_s16RightMotorPulse = 0;
   g_s32LeftMotorPulseOld = g_s32RightMotorPulseOld = 0;
@@ -118,181 +119,220 @@ void CarUpstandInit(void) {
 }
 
 /***************************************************************
-** º¯ÊýÃû³Æ: AbnormalSpinDetect
-** ¹¦ÄÜÃèÊö: µç»ú×ªËÙÒì³£¼ì²â
-** Êä¡¡Èë:
-** Êä¡¡³ö:
-** È«¾Ö±äÁ¿:
-** ×÷¡¡Õß:   ß÷ÎØÊµÑéÊÒMiaowLabs
-** ÈÕ¡¡ÆÚ:   2017Äê4ÔÂ26ÈÕ
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: AbnormalSpinDetect
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ì³£ï¿½ï¿½ï¿½
+** ï¿½ä¡¡ï¿½ï¿½:
+** ï¿½ä¡¡ï¿½ï¿½:
+** È«ï¿½Ö±ï¿½ï¿½ï¿½:
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:   ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½MiaowLabs
+** ï¿½Õ¡ï¿½ï¿½ï¿½:   2017ï¿½ï¿½4ï¿½ï¿½26ï¿½ï¿½
 ***************************************************************/
 
-void AbnormalSpinDetect(short leftSpeed, short rightSpeed) {
+void AbnormalSpinDetect(short leftSpeed, short rightSpeed)
+{
   static unsigned short count = 0;
 
-  //ËÙ¶ÈÉèÖÃÎª0Ê±¼ì²â£¬·ñÔò²»¼ì²â
-  if (g_iCarSpeedSet == 0) {
+  //ï¿½Ù¶ï¿½ï¿½ï¿½ï¿½ï¿½Îª0Ê±ï¿½ï¿½â£¬ï¿½ï¿½ï¿½ò²»¼ï¿½ï¿½
+  if (g_iCarSpeedSet == 0)
+  {
     if (((leftSpeed > 30) && (rightSpeed > 30) && (g_fCarAngle > -30) &&
          (g_fCarAngle < 30)) ||
         ((leftSpeed < -30) && (rightSpeed < -30)) && (g_fCarAngle > -30) &&
             (g_fCarAngle <
-             30)) { // ×óÓÒµç»ú×ªËÙ´óÓÚ30¡¢·½ÏòÏàÍ¬¡¢³ÖÐøÊ±¼ä³¬¹ý250ms£¬ÇÒ³µÉí½Ç¶È²»³¬¹ý30¶È£¬ÔòÅÐ¶ÏÎªÐü¿Õ¿Õ×ª
+             30))
+    { // ï¿½ï¿½ï¿½Òµï¿½ï¿½×ªï¿½Ù´ï¿½ï¿½ï¿½30ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ä³¬ï¿½ï¿½250msï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½Ç¶È²ï¿½ï¿½ï¿½ï¿½ï¿½30ï¿½È£ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½Îªï¿½ï¿½ï¿½Õ¿ï¿½×ª
       count++;
-      if (count > 50) {
+      if (count > 50)
+      {
         count = 0;
         AbnormalSpinFlag = 1;
       }
-    } else {
+    }
+    else
+    {
       count = 0;
     }
-  } else {
+  }
+  else
+  {
     count = 0;
   }
 }
 
 /***************************************************************
-** º¯ÊýÃû³Æ: LandingDetect
-** ¹¦ÄÜÃèÊö: Ð¡³µ×ÅµØ¼ì²â
-** Êä¡¡Èë:
-** Êä¡¡³ö:
-** È«¾Ö±äÁ¿:
-** ×÷¡¡Õß:   ß÷ÎØÊµÑéÊÒMiaowLabs
-** ÈÕ¡¡ÆÚ:   2017Äê4ÔÂ26ÈÕ
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: LandingDetect
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: Ð¡ï¿½ï¿½ï¿½ÅµØ¼ï¿½ï¿½
+** ï¿½ä¡¡ï¿½ï¿½:
+** ï¿½ä¡¡ï¿½ï¿½:
+** È«ï¿½Ö±ï¿½ï¿½ï¿½:
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:   ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½MiaowLabs
+** ï¿½Õ¡ï¿½ï¿½ï¿½:   2017ï¿½ï¿½4ï¿½ï¿½26ï¿½ï¿½
 ***************************************************************/
-void LandingDetect(void) {
+void LandingDetect(void)
+{
   static float lastCarAngle = 0;
   static unsigned short count = 0, count1 = 0;
 
   if (AbnormalSpinFlag == 0)
     return;
 
-  // Ð¡³µ½Ç¶È5¡ã~-5¡ãÆô¶¯¼ì²â
-  if ((g_fCarAngle > -5) && (g_fCarAngle < 5)) {
+  // Ð¡ï¿½ï¿½ï¿½Ç¶ï¿½5ï¿½ï¿½~-5ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+  if ((g_fCarAngle > -5) && (g_fCarAngle < 5))
+  {
     count1++;
     if (count1 >=
-        50) { //Ã¿¸ô250msÅÐ¶ÏÒ»´ÎÐ¡³µ½Ç¶È±ä»¯Á¿£¬±ä»¯Á¿Ð¡ÓÚ0.8¡ã»ò´óÓÚ-0.8¡ãÅÐ¶ÏÎªÐ¡³µ¾²Ö¹
+        50)
+    { //Ã¿ï¿½ï¿½250msï¿½Ð¶ï¿½Ò»ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½Ç¶È±ä»¯ï¿½ï¿½ï¿½ï¿½ï¿½ä»¯ï¿½ï¿½Ð¡ï¿½ï¿½0.8ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½-0.8ï¿½ï¿½ï¿½Ð¶ï¿½ÎªÐ¡ï¿½ï¿½ï¿½ï¿½Ö¹
       count1 = 0;
       if (((g_fCarAngle - lastCarAngle) < 0.8) &&
-          ((g_fCarAngle - lastCarAngle) > -0.8)) {
+          ((g_fCarAngle - lastCarAngle) > -0.8))
+      {
         count++;
-        if (count >= 4) {
+        if (count >= 4)
+        {
           count = 0;
           count1 = 0;
           g_fCarPosition = 0;
           AbnormalSpinFlag = 0;
         }
-      } else {
+      }
+      else
+      {
         count = 0;
       }
       lastCarAngle = g_fCarAngle;
     }
-  } else {
+  }
+  else
+  {
     count1 = 0;
     count = 0;
   }
 }
 
 /***************************************************************
-** º¯ÊýÃû³Æ: MotorManage
-** ¹¦ÄÜÃèÊö: µç»úÊ¹ÄÜ/Ê§ÄÜ¿ØÖÆ
-** Êä¡¡Èë:
-** Êä¡¡³ö:
-** È«¾Ö±äÁ¿:
-** ×÷¡¡Õß:   ß÷ÎØÊµÑéÊÒMiaowLabs
-** ÈÕ¡¡ÆÚ:   2017Äê4ÔÂ26ÈÕ
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: MotorManage
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½/Ê§ï¿½Ü¿ï¿½ï¿½ï¿½
+** ï¿½ä¡¡ï¿½ï¿½:
+** ï¿½ä¡¡ï¿½ï¿½:
+** È«ï¿½Ö±ï¿½ï¿½ï¿½:
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:   ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½MiaowLabs
+** ï¿½Õ¡ï¿½ï¿½ï¿½:   2017ï¿½ï¿½4ï¿½ï¿½26ï¿½ï¿½
 ***************************************************************/
-void MotorManage(void) {
+void MotorManage(void)
+{
 
   AbnormalSpinDetect(g_s16LeftMotorPulse, g_s16RightMotorPulse);
 
   LandingDetect();
 
-  if (AbnormalSpinFlag) {
+  if (AbnormalSpinFlag)
+  {
     g_cMotorDisable |= (0x01 << 1);
-  } else {
+  }
+  else
+  {
     g_cMotorDisable &= ~(0x01 << 1);
   }
 
-  if (g_fCarAngle > 30 || g_fCarAngle < (-30)) {
+  if (g_fCarAngle > 30 || g_fCarAngle < (-30))
+  {
     g_cMotorDisable |= (0x01 << 2);
-  } else {
+  }
+  else
+  {
     g_cMotorDisable &= ~(0x01 << 2);
   }
 }
 
 /***************************************************************
-** º¯ÊýÃû³Æ: SetMotorVoltageAndDirection
-** ¹¦ÄÜÃèÊö: µç»ú×ªËÙ¼°·½Ïò¿ØÖÆº¯Êý
-** Êä¡¡Èë:
-** Êä¡¡³ö:
-** È«¾Ö±äÁ¿:
-** ×÷¡¡Õß:   ß÷ÎØÊµÑéÊÒMiaowLabs
-** ÌÔ  ±¦£º  https://miaowlabs.taobao.com/
-** ÈÕ¡¡ÆÚ:   2018Äê08ÔÂ27ÈÕ
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: SetMotorVoltageAndDirection
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½×ªï¿½Ù¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æºï¿½ï¿½ï¿½
+** ï¿½ä¡¡ï¿½ï¿½:
+** ï¿½ä¡¡ï¿½ï¿½:
+** È«ï¿½Ö±ï¿½ï¿½ï¿½:
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:   ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½MiaowLabs
+** ï¿½ï¿½  ï¿½ï¿½ï¿½ï¿½  https://miaowlabs.taobao.com/
+** ï¿½Õ¡ï¿½ï¿½ï¿½:   2018ï¿½ï¿½08ï¿½ï¿½27ï¿½ï¿½
 ***************************************************************/
-void SetMotorVoltageAndDirection(int i16LeftVoltage, int i16RightVoltage) {
-  if (i16LeftVoltage < 0) {
+void SetMotorVoltageAndDirection(int i16LeftVoltage, int i16RightVoltage)
+{
+  if (i16LeftVoltage < 0)
+  {
     GPIO_SetBits(GPIOA, GPIO_Pin_3);
     GPIO_ResetBits(GPIOA, GPIO_Pin_4);
     i16LeftVoltage = (-i16LeftVoltage);
-  } else {
+  }
+  else
+  {
     GPIO_SetBits(GPIOA, GPIO_Pin_4);
     GPIO_ResetBits(GPIOA, GPIO_Pin_3);
   }
 
-  if (i16RightVoltage < 0) {
+  if (i16RightVoltage < 0)
+  {
     GPIO_SetBits(GPIOB, GPIO_Pin_0);
     GPIO_ResetBits(GPIOB, GPIO_Pin_1);
     i16RightVoltage = (-i16RightVoltage);
-  } else {
+  }
+  else
+  {
     GPIO_SetBits(GPIOB, GPIO_Pin_1);
     GPIO_ResetBits(GPIOB, GPIO_Pin_0);
   }
 
-  if (i16RightVoltage > MOTOR_OUT_MAX) {
+  if (i16RightVoltage > MOTOR_OUT_MAX)
+  {
     i16RightVoltage = MOTOR_OUT_MAX;
   }
-  if (i16LeftVoltage > MOTOR_OUT_MAX) {
+  if (i16LeftVoltage > MOTOR_OUT_MAX)
+  {
     i16LeftVoltage = MOTOR_OUT_MAX;
   }
 
-  if (g_cMotorDisable) {
+  if (g_cMotorDisable)
+  {
     TIM_SetCompare1(TIM3, 0);
     TIM_SetCompare2(TIM3, 0);
-  } else {
+  }
+  else
+  {
     TIM_SetCompare1(TIM3, i16RightVoltage);
     TIM_SetCompare2(TIM3, i16LeftVoltage);
   }
 }
 
 /***************************************************************
-** º¯ÊýÃû³Æ: MotorOutput
-** ¹¦ÄÜÃèÊö: µç»úÊä³öº¯Êý
-             ½«Ö±Á¢¿ØÖÆ¡¢ËÙ¶È¿ØÖÆ¡¢·½Ïò¿ØÖÆµÄÊä³öÁ¿½øÐÐµþ¼Ó,²¢¼Ó
-                         ÈëËÀÇø³£Á¿£¬¶ÔÊä³ö±¥ºÍ×÷³ö´¦Àí¡£
-** Êä¡¡Èë:
-** Êä¡¡³ö:
-** È«¾Ö±äÁ¿:
-** ×÷¡¡Õß:   ß÷ÎØÊµÑéÊÒMiaowLabs
-** ÌÔ  ±¦£º  https://miaowlabs.taobao.com/
-** ÈÕ¡¡ÆÚ:   2014Äê08ÔÂ01ÈÕ
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: MotorOutput
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+             ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½Æ¡ï¿½ï¿½Ù¶È¿ï¿½ï¿½Æ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½
+                         ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+** ï¿½ä¡¡ï¿½ï¿½:
+** ï¿½ä¡¡ï¿½ï¿½:
+** È«ï¿½Ö±ï¿½ï¿½ï¿½:
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:   ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½MiaowLabs
+** ï¿½ï¿½  ï¿½ï¿½ï¿½ï¿½  https://miaowlabs.taobao.com/
+** ï¿½Õ¡ï¿½ï¿½ï¿½:   2014ï¿½ï¿½08ï¿½ï¿½01ï¿½ï¿½
 ***************************************************************/
-void MotorOutput(void) {
+void MotorOutput(void)
+{
   // char buffer[50];
   g_fLeftMotorOut =
       g_fAngleControlOut - g_fSpeedControlOut -
-      g_fBluetoothDirection; //ÕâÀïµÄµç»úÊä³öµÈÓÚ½Ç¶È»·¿ØÖÆÁ¿ +
-                             //ËÙ¶È»·Íâ»·,ÕâÀïµÄ - g_fSpeedControlOut
-                             //ÊÇÒòÎªËÙ¶È»·µÄ¼«ÐÔ¸ú½Ç¶È»·²»Ò»Ñù£¬½Ç¶È»·ÊÇ¸º·´À¡£¬ËÙ¶È»·ÊÇÕý·´À¡
+      g_fBluetoothDirection; //ï¿½ï¿½ï¿½ï¿½Äµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú½Ç¶È»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ +
+                             //ï¿½Ù¶È»ï¿½ï¿½â»·,ï¿½ï¿½ï¿½ï¿½ï¿½ - g_fSpeedControlOut
+                             //ï¿½ï¿½ï¿½ï¿½Îªï¿½Ù¶È»ï¿½ï¿½Ä¼ï¿½ï¿½Ô¸ï¿½ï¿½Ç¶È»ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ç¶È»ï¿½ï¿½Ç¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶È»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
   g_fRightMotorOut =
-      g_fAngleControlOut - g_fSpeedControlOut + g_fBluetoothDirection;;
+      g_fAngleControlOut - g_fSpeedControlOut + g_fBluetoothDirection;
+  ;
   if (g_fForwardStatus == 1)
     g_fLeftMotorOut -= g_fSpeedDelta;
-  if (g_fForwardStatus == 1){
+  if (g_fForwardStatus == 1)
+  {
     g_fLeftMotorOut += g_fxyAngleControlOut;
     g_fRightMotorOut -= g_fxyAngleControlOut;
   }
-  /*Ôö¼ÓËÀÇø³£Êý*/
+  /*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
   if ((int)g_fLeftMotorOut > 0)
     g_fLeftMotorOut += MOTOR_OUT_DEAD_VAL;
   else if ((int)g_fLeftMotorOut < 0)
@@ -302,7 +342,7 @@ void MotorOutput(void) {
   else if ((int)g_fRightMotorOut < 0)
     g_fRightMotorOut -= MOTOR_OUT_DEAD_VAL;
 
-  /*Êä³ö±¥ºÍ´¦Àí£¬·ÀÖ¹³¬³öPWM·¶Î§*/
+  /*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½PWMï¿½ï¿½Î§*/
   if ((int)g_fLeftMotorOut > MOTOR_OUT_MAX)
     g_fLeftMotorOut = MOTOR_OUT_MAX;
   if ((int)g_fLeftMotorOut < MOTOR_OUT_MIN)
@@ -315,12 +355,12 @@ void MotorOutput(void) {
   SetMotorVoltageAndDirection((int)g_fLeftMotorOut, (int)g_fRightMotorOut);
 }
 
-void GetMotorPulse(void) //²É¼¯µç»úËÙ¶ÈÂö³å
+void GetMotorPulse(void) //ï¿½É¼ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½ï¿½ï¿½ï¿½ï¿½
 {
   g_s16LeftMotorPulse = TIM_GetCounter(TIM2);
   g_s16RightMotorPulse = -TIM_GetCounter(TIM4);
   TIM2->CNT = 0;
-  TIM4->CNT = 0; //ÇåÁã
+  TIM4->CNT = 0; //ï¿½ï¿½ï¿½ï¿½
 
   g_s32LeftMotorPulseSigma += g_s16LeftMotorPulse;
   g_s32RightMotorPulseSigma += g_s16RightMotorPulse;
@@ -330,86 +370,88 @@ void GetMotorPulse(void) //²É¼¯µç»úËÙ¶ÈÂö³å
 }
 
 /***************************************************************
-** ×÷¡¡  Õß: MiaowLabs Team
-** ¹Ù    Íø£ºhttp://www.miaowlabs.com
-** ÌÔ    ±¦£ºhttps://miaowlabs.taobao.com/
-** ÈÕ¡¡  ÆÚ: 2015Äê11ÔÂ29ÈÕ
-** º¯ÊýÃû³Æ: AngleCalculate
-** ¹¦ÄÜÃèÊö: ½Ç¶È»·¼ÆËãº¯Êý
-** Êä¡¡  Èë:
-** Êä¡¡  ³ö:
-** ±¸    ×¢:
-********************ß÷ÎØÊµÑéÊÒMiaowLabs°æÈ¨ËùÓÐ**************************
+** ï¿½ï¿½ï¿½ï¿½  ï¿½ï¿½: MiaowLabs Team
+** ï¿½ï¿½    ï¿½ï¿½ï¿½ï¿½http://www.miaowlabs.com
+** ï¿½ï¿½    ï¿½ï¿½ï¿½ï¿½https://miaowlabs.taobao.com/
+** ï¿½Õ¡ï¿½  ï¿½ï¿½: 2015ï¿½ï¿½11ï¿½ï¿½29ï¿½ï¿½
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: AngleCalculate
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: ï¿½Ç¶È»ï¿½ï¿½ï¿½ï¿½ãº¯ï¿½ï¿½
+** ï¿½ä¡¡  ï¿½ï¿½:
+** ï¿½ä¡¡  ï¿½ï¿½:
+** ï¿½ï¿½    ×¢:
+********************ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½MiaowLabsï¿½ï¿½È¨ï¿½ï¿½ï¿½ï¿½**************************
 ***************************************************************/
-void AngleCalculate(void) {
-  //-------¼ÓËÙ¶È--------------------------
-  //Á¿³ÌÎª¡À2gÊ±£¬ÁéÃô¶È£º16384 LSB/g
+void AngleCalculate(void)
+{
+  //-------ï¿½ï¿½ï¿½Ù¶ï¿½--------------------------
+  //ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½2gÊ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È£ï¿½16384 LSB/g
   g_fGravityAngle =
       atan2(g_fAccel_y / 16384.0, g_fAccel_z / 16384.0) * 180.0 / 3.14;
   g_fGravityAngle = g_fGravityAngle - g_iGravity_Offset;
 
-  
-  //-------½ÇËÙ¶È-------------------------
-  //·¶Î§Îª2000deg/sÊ±£¬»»Ëã¹ØÏµ£º16.4 LSB/(deg/s)
-  g_fGyro_x = g_fGyro_x / 16.4; //¼ÆËã½ÇËÙ¶ÈÖµ
+  //-------ï¿½ï¿½ï¿½Ù¶ï¿½-------------------------
+  //ï¿½ï¿½Î§Îª2000deg/sÊ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½16.4 LSB/(deg/s)
+  g_fGyro_x = g_fGyro_x / 16.4; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½Öµ
   g_fGyroAngleSpeed = g_fGyro_x;
 
-  //-------»¥²¹ÂË²¨---------------
+  //-------ï¿½ï¿½ï¿½ï¿½ï¿½Ë²ï¿½---------------
   g_fCarAngle =
       0.98 * (g_fCarAngle + g_fGyroAngleSpeed * 0.005) + 0.02 * g_fGravityAngle;
 
-  g_fYawAngle = atan2(g_fAccel_x / 16384.0,g_fAccel_y / 16384.0) * 180.0 / 3.14;
-  
+  g_fYawAngle = atan2(g_fAccel_x / 16384.0, g_fAccel_y / 16384.0) * 180.0 / 3.14;
+
   g_fGyro_z = g_fGyro_z / 16.4;
   g_fGyroAngleSpeed_z = g_fGyro_z;
   // g_fxyAngle = 0.98 * (g_fxyAngle + g_fGyroAngleSpeed_z * 0.005) - 0.02 * g_fYawAngle;
-  g_fxyAngle = g_fxyAngle + g_fGyroAngleSpeed_z *0.005;
+  g_fxyAngle = g_fxyAngle + g_fGyroAngleSpeed_z * 0.005;
 }
 
 /***************************************************************
-** ×÷¡¡  Õß: ß÷ÎØÊµÑéÊÒMiaowLabs
-** ¹Ù    Íø£ºhttp://www.miaowlabs.com
-** ÌÔ    ±¦£ºhttps://miaowlabs.taobao.com/
-** ÈÕ¡¡  ÆÚ: 2018Äê08ÔÂ27ÈÕ
-** º¯ÊýÃû³Æ: AngleControl
-** ¹¦ÄÜÃèÊö: ½Ç¶È»·¿ØÖÆº¯Êý
-** Êä¡¡  Èë:
-** Êä¡¡  ³ö:
-** ±¸    ×¢:
-********************ß÷ÎØÊµÑéÊÒMiaowLabs°æÈ¨ËùÓÐ**************************
+** ï¿½ï¿½ï¿½ï¿½  ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½MiaowLabs
+** ï¿½ï¿½    ï¿½ï¿½ï¿½ï¿½http://www.miaowlabs.com
+** ï¿½ï¿½    ï¿½ï¿½ï¿½ï¿½https://miaowlabs.taobao.com/
+** ï¿½Õ¡ï¿½  ï¿½ï¿½: 2018ï¿½ï¿½08ï¿½ï¿½27ï¿½ï¿½
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: AngleControl
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: ï¿½Ç¶È»ï¿½ï¿½ï¿½ï¿½Æºï¿½ï¿½ï¿½
+** ï¿½ä¡¡  ï¿½ï¿½:
+** ï¿½ä¡¡  ï¿½ï¿½:
+** ï¿½ï¿½    ×¢:
+********************ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½MiaowLabsï¿½ï¿½È¨ï¿½ï¿½ï¿½ï¿½**************************
 ***************************************************************/
-void AngleControl(void) {
+void AngleControl(void)
+{
   g_fAngleControlOut =
       (CAR_ANGLE_SET - g_fCarAngle) * g_tCarAnglePID.P * 5 +
       (CAR_ANGLE_SPEED_SET - g_fGyroAngleSpeed) * (g_tCarAnglePID.D / 10);
-  // ½ÇËÙ¶ÈÏòÓÒÎª¸ºÖµ ½Ç¶ÈÏòÓÒÎªÕýÖµ
+  // ï¿½ï¿½ï¿½Ù¶ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½Öµ ï¿½Ç¶ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½Öµ
   g_fxyAngleControlOut = (CAR_XY_ANGLE_SPEED_SET - g_fGyroAngleSpeed_z) * (g_txyAnglePID.D /10);
 }
 
 /***************************************************************
-** º¯ÊýÃû³Æ: SpeedControl
-** ¹¦ÄÜÃèÊö: ËÙ¶È»·¿ØÖÆº¯Êý
-** Êä¡¡Èë:
-** Êä¡¡³ö:
-** È«¾Ö±äÁ¿:
-** ×÷¡¡Õß:   ß÷ÎØÊµÑéÊÒMiaowLabs
-** ÌÔ  ±¦£º  https://miaowlabs.taobao.com/
-** ÈÕ¡¡ÆÚ:   2014Äê08ÔÂ01ÈÕ
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: SpeedControl
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: ï¿½Ù¶È»ï¿½ï¿½ï¿½ï¿½Æºï¿½ï¿½ï¿½
+** ï¿½ä¡¡ï¿½ï¿½:
+** ï¿½ä¡¡ï¿½ï¿½:
+** È«ï¿½Ö±ï¿½ï¿½ï¿½:
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:   ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½MiaowLabs
+** ï¿½ï¿½  ï¿½ï¿½ï¿½ï¿½  https://miaowlabs.taobao.com/
+** ï¿½Õ¡ï¿½ï¿½ï¿½:   2014ï¿½ï¿½08ï¿½ï¿½01ï¿½ï¿½
 ***************************************************************/
 
-void SpeedControl(void) {
+void SpeedControl(void)
+{
   float fP, fI;
   float fDelta;
   float fk = 0.02;
   speed_old_2 = g_fCarSpeed;
   g_fCarSpeed = (g_s32LeftMotorPulseSigma + g_s32RightMotorPulseSigma) * 0.5;
-  g_fSpeedDelta = fk*(g_s32LeftMotorPulseSigma - g_s32RightMotorPulseSigma);
-  
+  g_fSpeedDelta = fk * (g_s32LeftMotorPulseSigma - g_s32RightMotorPulseSigma);
+
   g_s32LeftMotorPulseSigma = g_s32RightMotorPulseSigma =
-      0; //È«¾Ö±äÁ¿ ×¢Òâ¼°Ê±ÇåÁã
+      0; //È«ï¿½Ö±ï¿½ï¿½ï¿½ ×¢ï¿½â¼°Ê±ï¿½ï¿½ï¿½ï¿½
 
   g_fCarSpeed =
-      0.7 * g_fCarSpeedOld + 0.3 * g_fCarSpeed; //µÍÍ¨ÂË²¨£¬Ê¹ËÙ¶È¸üÆ½»¬
+      0.7 * g_fCarSpeedOld + 0.3 * g_fCarSpeed; //ï¿½ï¿½Í¨ï¿½Ë²ï¿½ï¿½ï¿½Ê¹ï¿½Ù¶È¸ï¿½Æ½ï¿½ï¿½
   g_fCarSpeedOld = g_fCarSpeed;
 
   fDelta = CAR_SPEED_SET;
@@ -421,7 +463,7 @@ void SpeedControl(void) {
   g_fCarPosition += fI;
   g_fCarPosition += g_fBluetoothSpeed;
 
-  //»ý·ÖÉÏÏÞÉèÏÞ
+  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
   if ((s16)g_fCarPosition > CAR_POSITION_MAX)
     g_fCarPosition = CAR_POSITION_MAX;
   if ((s16)g_fCarPosition < CAR_POSITION_MIN)
@@ -431,17 +473,18 @@ void SpeedControl(void) {
   g_fSpeedControlOutNew = fP + g_fCarPosition;
 }
 /***************************************************************
-** º¯ÊýÃû³Æ: SpeedControlOutput
-** ¹¦ÄÜÃèÊö:
-*ËÙ¶È»·¿ØÖÆÊä³öº¯Êý-·Ö¶à²½Öð´Î±Æ½ü×îÖÕÊä³ö£¬¾¡¿ÉÄÜ½«¶ÔÖ±Á¢»·µÄ¸ÉÈÅ½µµÍ¡£
-** Êä¡¡Èë:
-** Êä¡¡³ö:
-** È«¾Ö±äÁ¿:
-** ×÷¡¡Õß:   ß÷ÎØÊµÑéÊÒMiaowLabs
-** ÌÔ  ±¦£º  https://miaowlabs.taobao.com/
-** ÈÕ¡¡ÆÚ:   2014Äê08ÔÂ01ÈÕ
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: SpeedControlOutput
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:
+*ï¿½Ù¶È»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½-ï¿½Ö¶à²½ï¿½ï¿½Î±Æ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½Å½ï¿½ï¿½Í¡ï¿½
+** ï¿½ä¡¡ï¿½ï¿½:
+** ï¿½ä¡¡ï¿½ï¿½:
+** È«ï¿½Ö±ï¿½ï¿½ï¿½:
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:   ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½MiaowLabs
+** ï¿½ï¿½  ï¿½ï¿½ï¿½ï¿½  https://miaowlabs.taobao.com/
+** ï¿½Õ¡ï¿½ï¿½ï¿½:   2014ï¿½ï¿½08ï¿½ï¿½01ï¿½ï¿½
 ***************************************************************/
-void SpeedControlOutput(void) {
+void SpeedControlOutput(void)
+{
   float fValue;
   fValue = g_fSpeedControlOutNew - g_fSpeedControlOutOld;
   g_fSpeedControlOut =
@@ -450,17 +493,18 @@ void SpeedControlOutput(void) {
 }
 
 /***************************************************************
-** º¯ÊýÃû³Æ: Scale
-** ¹¦ÄÜÃèÊö: Á¿³Ì¹éÒ»»¯´¦Àí
-** Êä¡¡Èë:
-** Êä¡¡³ö:
-** È«¾Ö±äÁ¿:
-** ×÷¡¡Õß:   ß÷ÎØÊµÑéÊÒMiaowLabs
-** ÌÔ  ±¦£º  https://miaowlabs.taobao.com/
-** ÈÕ¡¡ÆÚ:   2014Äê08ÔÂ01ÈÕ
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: Scale
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½Ì¹ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+** ï¿½ä¡¡ï¿½ï¿½:
+** ï¿½ä¡¡ï¿½ï¿½:
+** È«ï¿½Ö±ï¿½ï¿½ï¿½:
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:   ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½MiaowLabs
+** ï¿½ï¿½  ï¿½ï¿½ï¿½ï¿½  https://miaowlabs.taobao.com/
+** ï¿½Õ¡ï¿½ï¿½ï¿½:   2014ï¿½ï¿½08ï¿½ï¿½01ï¿½ï¿½
 ***************************************************************/
 float Scale(float input, float inputMin, float inputMax, float outputMin,
-            float outputMax) {
+            float outputMax)
+{
   float output;
   if (inputMin < inputMax)
     output =
@@ -476,25 +520,29 @@ float Scale(float input, float inputMin, float inputMax, float outputMin,
 }
 
 /***************************************************************
-** º¯ÊýÃû³Æ: Steer
-** ¹¦ÄÜÃèÊö: Ò£¿ØËÙ¶È¼°·½Ïò´¦Àíº¯Êý
-** Êä¡¡Èë:
-** Êä¡¡³ö:
-** È«¾Ö±äÁ¿:
-** ×÷¡¡Õß:   ß÷ÎØÊµÑéÊÒMiaowLabs
-** ÌÔ  ±¦£º  https://miaowlabs.taobao.com/
-** ÈÕ¡¡ÆÚ:   2014Äê08ÔÂ01ÈÕ
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: Steer
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: Ò£ï¿½ï¿½ï¿½Ù¶È¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+** ï¿½ä¡¡ï¿½ï¿½:
+** ï¿½ä¡¡ï¿½ï¿½:
+** È«ï¿½Ö±ï¿½ï¿½ï¿½:
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:   ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½MiaowLabs
+** ï¿½ï¿½  ï¿½ï¿½ï¿½ï¿½  https://miaowlabs.taobao.com/
+** ï¿½Õ¡ï¿½ï¿½ï¿½:   2014ï¿½ï¿½08ï¿½ï¿½01ï¿½ï¿½
 ***************************************************************/
-void Steer(float direct, float speed) {
-  if (direct == 0){
+void Steer(float direct, float speed)
+{
+  if (direct == 0)
+  {
     g_fForwardStatus = 1;
-    g_fBluetoothDirection = Scale(direct,0,10,0,400);
+    g_fBluetoothDirection = Scale(direct, 0, 10, 0, 400);
   }
-  else if (direct > 0){
+  else if (direct > 0)
+  {
     g_fForwardStatus = 0;
     g_fBluetoothDirection = Scale(direct, 0, 10, 0, 400);
   }
-  else{
+  else
+  {
     g_fForwardStatus = 0;
     g_fBluetoothDirection = -Scale(direct, 0, -10, 0, 400);
   }
@@ -505,51 +553,62 @@ void Steer(float direct, float speed) {
 }
 
 /***************************************************************
-** ×÷¡¡  Õß: Songyibiao
-** ¹Ù    Íø£ºhttp://www.miaowlabs.com
-** ÌÔ    ±¦£ºhttps://miaowlabs.taobao.com/
-** ÈÕ¡¡  ÆÚ: 20160415
-** º¯ÊýÃû³Æ: UltraControl
-** ¹¦ÄÜÃèÊö: ³¬Éù²¨¸úËæ/±ÜÕÏ
-** Êä¡¡  Èë:
-** Êä¡¡  ³ö:
-** ±¸    ×¢:
-********************ß÷ÎØÊµÑéÊÒMiaowLabs°æÈ¨ËùÓÐ**************************/
-void UltraControl(int mode) {
-  if (mode == 0) {
-    if ((Distance >= 0) && (Distance <= 12)) { //¾àÀëÐ¡ÓÚ12cmÔòºóÍË
+** ï¿½ï¿½ï¿½ï¿½  ï¿½ï¿½: Songyibiao
+** ï¿½ï¿½    ï¿½ï¿½ï¿½ï¿½http://www.miaowlabs.com
+** ï¿½ï¿½    ï¿½ï¿½ï¿½ï¿½https://miaowlabs.taobao.com/
+** ï¿½Õ¡ï¿½  ï¿½ï¿½: 20160415
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: UltraControl
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½
+** ï¿½ä¡¡  ï¿½ï¿½:
+** ï¿½ä¡¡  ï¿½ï¿½:
+** ï¿½ï¿½    ×¢:
+********************ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½MiaowLabsï¿½ï¿½È¨ï¿½ï¿½ï¿½ï¿½**************************/
+void UltraControl(int mode)
+{
+  if (mode == 0)
+  {
+    if ((Distance >= 0) && (Distance <= 12))
+    { //ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½12cmï¿½ï¿½ï¿½ï¿½ï¿½
       Steer(0, -4);
-    } else if ((Distance > 18) &&
-               (Distance <= 30)) { //¾àÀë´óÓÚ18cmÇÒÐ¡ÓÚ30ÔòÇ°½ø
+    }
+    else if ((Distance > 18) &&
+             (Distance <= 30))
+    { //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½18cmï¿½ï¿½Ð¡ï¿½ï¿½30ï¿½ï¿½Ç°ï¿½ï¿½
       Steer(0, 4);
-    } else
+    }
+    else
       Steer(0, 0);
-  } else if (mode == 1) {
+  }
+  else if (mode == 1)
+  {
     if ((Distance >= 0) &&
-        (Distance <= 20)) { //ÓÒ×ª750¸öÂö³å¼ÆÊý£¬×ªÍä½Ç¶ÈÔ¼Îª90¶È
+        (Distance <= 20))
+    { //ï¿½ï¿½×ª750ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½Ç¶ï¿½Ô¼Îª90ï¿½ï¿½
       Steer(5, 0);
       g_iLeftTurnRoundCnt = 750;
       g_iRightTurnRoundCnt = -750;
     }
-    if ((g_iLeftTurnRoundCnt < 0) && (g_iRightTurnRoundCnt > 0)) {
+    if ((g_iLeftTurnRoundCnt < 0) && (g_iRightTurnRoundCnt > 0))
+    {
       Steer(0, 4);
     }
   }
 }
 
 /***************************************************************
-** ×÷¡¡  Õß: MiaowLabs Team
-** ¹Ù    Íø£ºhttp://www.miaowlabs.com
-** ÌÔ    ±¦£ºhttps://miaowlabs.taobao.com/
-** ÈÕ¡¡  ÆÚ: 20160415
-** º¯ÊýÃû³Æ: TailingControl
-** ¹¦ÄÜÃèÊö: ºìÍâÑ°¼£
-** Êä¡¡  Èë:
-** Êä¡¡  ³ö:
-** ±¸    ×¢:
-********************ß÷ÎØÊµÑéÊÒMiaowLabs°æÈ¨ËùÓÐ**************************
+** ï¿½ï¿½ï¿½ï¿½  ï¿½ï¿½: MiaowLabs Team
+** ï¿½ï¿½    ï¿½ï¿½ï¿½ï¿½http://www.miaowlabs.com
+** ï¿½ï¿½    ï¿½ï¿½ï¿½ï¿½https://miaowlabs.taobao.com/
+** ï¿½Õ¡ï¿½  ï¿½ï¿½: 20160415
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: TailingControl
+** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½Ñ°ï¿½ï¿½
+** ï¿½ä¡¡  ï¿½ï¿½:
+** ï¿½ä¡¡  ï¿½ï¿½:
+** ï¿½ï¿½    ×¢:
+********************ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½MiaowLabsï¿½ï¿½È¨ï¿½ï¿½ï¿½ï¿½**************************
 ***************************************************************/
-void TailingControl(void) {
+void TailingControl(void)
+{
 #if INFRARE_DEBUG_EN > 0
   char buff[32];
 #endif
@@ -559,22 +618,26 @@ void TailingControl(void) {
 
   result = InfraredDetect();
 
-  if (result & infrared_channel_Lc)
-    direct = -10;
-//   else if (result & infrared_channel_Lb)
-//     direct = -6;
+  speed = 3;
+
+  if ((result & infrared_channel_La) && (result & infrared_channel_Ra) && (result & infrared_channel_Lb) && (result & infrared_channel_Rb))
+  {
+    speed = 0;
+  }
+  //if (result & infrared_channel_Lc)
+  // direct = -10;
+  // if (result & infrared_channel_Lb)
+  // direct = 0;
   else if (result & infrared_channel_La)
     direct = -4;
-  else if (result & infrared_channel_Rc)
-    direct = 10;
-//   else if (result & infrared_channel_Rb)
-//     direct = 6;
+  //else if (result & infrared_channel_Rc)
+  // direct = 10;
+  // else if (result & infrared_channel_Rb)
+  // direct = 6;
   else if (result & infrared_channel_Ra)
     direct = 4;
   else
     direct = 0.0;
-
-  speed = 3;
 
   Steer(direct, speed);
 
@@ -593,9 +656,9 @@ void TailingControl(void) {
 #define RIGHT_TURN 6
 #define RIGHT_TURN_STOP 7
 
-// ³õÊ¼»¯×´Ì¬ÎªÇ°½ø1m
+// ï¿½ï¿½Ê¼ï¿½ï¿½×´Ì¬ÎªÇ°ï¿½ï¿½1m
 int report_mode_one_status = FORWARD;
-// ¼ÆÊ± Ö÷ÒªÓÃÓÚÍ£Ö¹¼ÆÊ±
+// ï¿½ï¿½Ê± ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½Í£Ö¹ï¿½ï¿½Ê±
 int report_mode_one_timer = 0;
 
 void ResetReportOneTimer() { report_mode_one_timer = 0; }
@@ -607,8 +670,9 @@ float g_speed_old = 0;
 int print_counter = 0;
 int left_turn_start = 1;
 int right_turn_start = 1;
-// Ã¿20msÖ´ÐÐÒ»´Î
-void ReportModeOneControl(void) {
+// Ã¿20msÖ´ï¿½ï¿½Ò»ï¿½ï¿½
+void ReportModeOneControl(void)
+{
   float current_speed;
   // char buffer[60];
   // sprintf(buffer, "state:%d distance:%f m speed:%f cm/s direction:%f left pulse:%d right pulse:%d\r\n",
@@ -616,15 +680,20 @@ void ReportModeOneControl(void) {
   //         g_fBluetoothDirection,g_s32LeftMotorPulseSigma,g_s32RightMotorPulseSigma);
   // Uart1SendStr(buffer);
   // print_counter = 0;
-  switch (report_mode_one_status) {
-  case FORWARD: {
-    if (g_Distance > 0.9 && g_Distance < 1.1) {
+  switch (report_mode_one_status)
+  {
+  case FORWARD:
+  {
+    if (g_Distance > 1.1)
+    {
       report_mode_one_status = FORWARD_STOP;
       g_Distance = 0;
       g_speed_old = 0;
       ResetReportOneTimer();
       Steer(0, 0);
-    } else {
+    }
+    else
+    {
       Steer(0, 4);
       current_speed = (g_speed_old + g_fCarSpeed) * 0.5;
       g_speed_old = g_fCarSpeed;
@@ -632,14 +701,18 @@ void ReportModeOneControl(void) {
     }
     break;
   }
-  case BACK: {
-    if (g_Distance < -0.9 && g_Distance > -1.1) {
+  case BACK:
+  {
+    if (g_Distance < -1.1)
+    {
       report_mode_one_status = BACK_STOP;
       g_Distance = 0;
       g_speed_old = 0;
       ResetReportOneTimer();
       Steer(0, 0);
-    } else {
+    }
+    else
+    {
       Steer(0, -3);
       current_speed = (g_speed_old + g_fCarSpeed) * 0.5;
       g_speed_old = g_fCarSpeed;
@@ -647,29 +720,35 @@ void ReportModeOneControl(void) {
     }
     break;
   }
-  case LEFT_TURN: {
-    if (left_turn_start == 1) {
+  case LEFT_TURN:
+  {
+    if (left_turn_start == 1)
+    {
       Steer(-1, 4);
       // g_iLeftTurnRoundCnt = -750;
       g_iRightTurnRoundCnt = 5000;
       left_turn_start = 0;
     }
 
-    if (g_iRightTurnRoundCnt < 0) {
+    if (g_iRightTurnRoundCnt < 0)
+    {
       report_mode_one_status = LEFT_TURN_STOP;
       ResetReportOneTimer();
       Steer(0, 0);
     }
     break;
   }
-  case RIGHT_TURN: {
-    if (right_turn_start == 1) {
+  case RIGHT_TURN:
+  {
+    if (right_turn_start == 1)
+    {
       Steer(1, 4);
       g_iLeftTurnRoundCnt = 5000;
       // g_iRightTurnRoundCnt = -750;
       right_turn_start = 0;
     }
-    if (g_iLeftTurnRoundCnt < 0) {
+    if (g_iLeftTurnRoundCnt < 0)
+    {
       report_mode_one_status = RIGHT_TURN_STOP;
       ResetReportOneTimer();
       Steer(0, 0);
@@ -679,18 +758,29 @@ void ReportModeOneControl(void) {
   case FORWARD_STOP:
   case BACK_STOP:
   case LEFT_TURN_STOP:
-  case RIGHT_TURN_STOP: {
-    if (report_mode_one_timer > 1000) {
-      if (report_mode_one_status == FORWARD_STOP) {
+  case RIGHT_TURN_STOP:
+  {
+    if (report_mode_one_timer > 1000)
+    {
+      if (report_mode_one_status == FORWARD_STOP)
+      {
         report_mode_one_status = BACK;
-      } else if (report_mode_one_status == BACK_STOP) {
+      }
+      else if (report_mode_one_status == BACK_STOP)
+      {
         report_mode_one_status = LEFT_TURN;
-      } else if (report_mode_one_status == LEFT_TURN_STOP) {
+      }
+      else if (report_mode_one_status == LEFT_TURN_STOP)
+      {
         report_mode_one_status = RIGHT_TURN;
-      } else if (report_mode_one_status == RIGHT_TURN_STOP) {
+      }
+      else if (report_mode_one_status == RIGHT_TURN_STOP)
+      {
       }
       ResetReportOneTimer();
-    } else {
+    }
+    else
+    {
       IncReportOneTimer();
     }
     break;
@@ -701,6 +791,7 @@ void ReportModeOneControl(void) {
 #define TRACE 0
 #define AVOID 1
 #define STOP 2
+#define AVOID_BARRIAR 3
 
 #define AVOID_FORWARD 0
 #define AVOID_RIGHT_ONE 1
@@ -718,7 +809,7 @@ void ReportModeOneControl(void) {
 #define FORCED_TURN 4
 
 int avoid_status = AVOID_FORWARD;
-int report_mode_two_status = AVOID;
+int report_mode_two_status = TRACE;
 int right_one_start = 1;
 int left_one_start = 1;
 int right_two_start = 1;
@@ -737,173 +828,210 @@ int turn_counter = 0;
 int stop_counter = 0;
 int finetune_counter = 0;
 float delta_speed = 0;
+int left_barriar_counter = 80;
 
-void ReportModeTwoControl() {
-  // Ê×ÏÈÑ°¼£½øÈëÈüµÀÇø
+void ReportModeTwoControl()
+{
+  // ï¿½ï¿½ï¿½ï¿½Ñ°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
   char result;
-	// char buffer[20];
-  // result = InfraredDetect();
-  // sprintf(buffer,"result:%d",result);
-  // Uart1SendStr(buffer);
-  // if (result ==
-  //     (infrared_channel_La | infrared_channel_Lc |
-  //      infrared_channel_Ra | infrared_channel_Rc)) {
-  //   report_mode_two_status = STOP;
-  //   Steer(0, 0);
-  //   return;
-  // }
-  
-  if(distance_old == -1){
-    fixed_distance = Distance;
-    distance_old = Distance;
-  }
-  else if (Distance <= 400){
-    if (distance_status == DISTANCE_TURN || distance_status == FORCED_TURN){
-      distance_old = fixed_distance;
-      fixed_distance = Distance;
+
+  result = InfraredDetect();
+  if ((result & infrared_channel_La) && (result & infrared_channel_Ra) && (result & infrared_channel_Lb) && (result & infrared_channel_Rb) && (result & infrared_channel_Lc) && (result & infrared_channel_Rc))
+  {
+    if (report_mode_two_status == TRACE)
+    {
+      report_mode_two_status = AVOID_BARRIAR;
     }
-    else{
-      distance_old = fixed_distance;
-      fixed_distance = 0.8 * distance_old + 0.2 * Distance;
+    else if (report_mode_two_status == AVOID)
+    {
+      report_mode_two_status = STOP;
     }
   }
-  if (report_mode_two_status == TRACE) {
-#if INFRARE_DEBUG_EN > 0
-    char buff[32];
-#endif
+
+  if (report_mode_two_status == TRACE)
+  {
     float direct = 0;
     float speed = 0;
 
-    if (result & infrared_channel_Lc)
-      direct = -10;
-    // else if (result & infrared_channel_Lb)
-    //   direct = -6;
-    else if (result & infrared_channel_La)
-      direct = -4;
-    else if (result & infrared_channel_Rc)
-      direct = 10;
-    // else if (result & infrared_channel_Rb)
-    //   direct = 6;
-    else if (result & infrared_channel_Ra)
-      direct = 4;
-    else {
-      direct = 0.0;
-      report_mode_two_status = AVOID;
-    }
-
     speed = 3;
 
-    Steer(direct, speed);
+    //if (result & infrared_channel_Lc)
+    // direct = -10;
+    // if (result & infrared_channel_Lb)
+    // direct = 0;
+    if (result & infrared_channel_La)
+      direct = -4;
+    //else if (result & infrared_channel_Rc)
+    // direct = 10;
+    // else if (result & infrared_channel_Rb)
+    // direct = 6;
+    else if (result & infrared_channel_Ra)
+      direct = 4;
+    else
+      direct = 0.0;
 
-#if INFRARE_DEBUG_EN > 0
-    sprintf(buff, "Steer:%d, Speed:%d\r\n", (int)direct, (int)speed);
-    // DebugOutStr(buff);
-#endif
+    Steer(direct, speed);
   }
 
-  // ½øÈë±ÜÕÏÇø
-  if (report_mode_two_status == AVOID){
+  if (report_mode_two_status == AVOID_BARRIAR)
+  {
+    if (left_barriar_counter >= 0)
+    {
+      Steer(0, 4);
+      left_barriar_counter--;
+    }
+    else
+    {
+      report_mode_two_status = AVOID;
+    }
+  }
+
+  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+  if (report_mode_two_status == AVOID)
+  {
+
+    if (distance_old == -1)
+    {
+      fixed_distance = Distance;
+      distance_old = Distance;
+    }
+    else if (Distance <= 400)
+    {
+      if (distance_status == DISTANCE_TURN || distance_status == FORCED_TURN)
+      {
+        distance_old = fixed_distance;
+        fixed_distance = Distance;
+      }
+      else
+      {
+        distance_old = fixed_distance;
+        fixed_distance = 0.8 * distance_old + 0.2 * Distance;
+      }
+    }
     char buffer[40];
-    sprintf(buffer,"status:%d distance:%d speed:%.3f ",distance_status,fixed_distance,g_fCarSpeed);
+    sprintf(buffer, "status:%d distance:%d speed:%.3f ", distance_status, fixed_distance, g_fCarSpeed);
     Uart1SendStr(buffer);
     delta_distance = fixed_distance - distance_old;
     distance_old = fixed_distance;
     delta_speed = g_fCarSpeed - speed_old_2;
-    if (delta_speed <= -8 && distance_status == DISTANCE_FORWARD){
+    if (delta_speed <= -8 && distance_status == DISTANCE_FORWARD)
+    {
       distance_status = FORCED_BACKWARD;
     }
-    if (distance_status == FORCED_BACKWARD){
-      if(backward_counter <= 25){
-        Steer(0,-4);
-        backward_counter ++;
+    if (distance_status == FORCED_BACKWARD)
+    {
+      if (backward_counter <= 25)
+      {
+        Steer(0, -4);
+        backward_counter++;
       }
-      else{
+      else
+      {
         backward_counter = 0;
         distance_status_old = distance_status;
         distance_status = FORCED_TURN;
       }
       return;
     }
-    else if (distance_status == FORCED_TURN){
-      if(turn_counter <= 25){
-        if (90 + g_fxyAngle <= 0 && current_direction == 1){
+    else if (distance_status == FORCED_TURN)
+    {
+      if (turn_counter <= 25)
+      {
+        if (90 + g_fxyAngle <= 0 && current_direction == 1)
+        {
           current_direction = -current_direction;
         }
-        if(90 + g_fxyAngle >= 180 && current_direction == -1){
+        if (90 + g_fxyAngle >= 180 && current_direction == -1)
+        {
           current_direction = -current_direction;
         }
-        Steer(current_direction*rotate_speed,0);
-        turn_counter ++;
+        Steer(current_direction * rotate_speed, 0);
+        turn_counter++;
       }
-      else{
+      else
+      {
         turn_counter = 0;
         distance_status_old = distance_status;
         distance_status = DISTANCE_FORWARD;
       }
       return;
     }
-    if (delta_distance > 25){
+    if (delta_distance > 25)
+    {
     }
-    else{
-      if(fixed_distance <= 10 || fixed_distance > 500)
+    else
+    {
+      if (fixed_distance <= 10 || fixed_distance > 500)
         distance_status = DISTANCE_BACKWARD;
-      else if (fixed_distance >=20 && fixed_distance < 30)
+      else if (fixed_distance >= 20 && fixed_distance < 30)
         distance_status = DISTANCE_TURN;
-      else if (fixed_distance >= 30){
-        if (g_fCarSpeed <=3)
-          stop_counter ++;
-        else 
+      else if (fixed_distance >= 30)
+      {
+        if (g_fCarSpeed <= 3)
+          stop_counter++;
+        else
           stop_counter = 0;
-        if ((g_fGyroAngleSpeed_z > 60 || g_fGyroAngleSpeed_z <-60)||stop_counter >=50){
+        if ((g_fGyroAngleSpeed_z > 60 || g_fGyroAngleSpeed_z < -60) || stop_counter >= 50)
+        {
           distance_status = FORCED_BACKWARD;
           stop_counter = 0;
         }
         else
           distance_status = DISTANCE_FORWARD;
-    }
+      }
     }
 
-    if (distance_status == DISTANCE_BACKWARD){
-      Steer(0,-4);
+    if (distance_status == DISTANCE_BACKWARD)
+    {
+      Steer(0, -4);
       distance_status_old = distance_status;
     }
-    else if (distance_status == DISTANCE_TURN){
+    else if (distance_status == DISTANCE_TURN)
+    {
       float angle = 90 + g_fxyAngle;
-      if (angle <= 0 && current_direction == 1){
+      if (angle <= 0 && current_direction == 1)
+      {
         current_direction = -current_direction;
       }
-      if(angle >= 180 && current_direction == -1){
+      if (angle >= 180 && current_direction == -1)
+      {
         current_direction = -current_direction;
       }
-      Steer(current_direction * rotate_speed,0);
-      distance_status_old = distance_status;  
+      Steer(current_direction * rotate_speed, 0);
+      distance_status_old = distance_status;
     }
-    else {
-      if (distance_status_old == DISTANCE_TURN){
-        if (finetune_counter <= 12){
+    else
+    {
+      if (distance_status_old == DISTANCE_TURN)
+      {
+        if (finetune_counter <= 12)
+        {
           float angle = 90 + g_fxyAngle;
-          if (angle <= 0 && current_direction == 1){
+          if (angle <= 0 && current_direction == 1)
+          {
             current_direction = -current_direction;
           }
-          if(angle >= 180 && current_direction == -1){
+          if (angle >= 180 && current_direction == -1)
+          {
             current_direction = -current_direction;
-          }          
-          Steer(current_direction *rotate_speed,0);
-          finetune_counter ++;
+          }
+          Steer(current_direction * rotate_speed, 0);
+          finetune_counter++;
         }
-        else{
+        else
+        {
           finetune_counter = 0;
           distance_status_old = distance_status;
         }
       }
-      else{
-        Steer(0,4);
+      else
+      {
+        Steer(0, 4);
       }
     }
-    
   }
-  // // ½øÈë±ÜÕÏÇø
+  // // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
   // if (report_mode_two_status == AVOID) {
   //   char buffer[40];
   //   sprintf(buffer,"status:%d left pulse:%d right pulse:%d",avoid_status,g_s16LeftMotorPulse,g_s16RightMotorPulse);
@@ -996,4 +1124,10 @@ void ReportModeTwoControl() {
   //   }
   // }
   // //
+
+  if (report_mode_two_status == STOP)
+  {
+    Steer(0, 0);
+  }
+  //
 }
