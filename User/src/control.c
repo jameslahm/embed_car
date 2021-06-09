@@ -57,7 +57,7 @@ float g_fCarPosition;
 /*-----�ǶȻ����ٶȻ�PID���Ʋ���-----*/
 PID_t g_tCarAnglePID = {17.0, 0, 23.0};  //*5 /10
 PID_t g_tCarSpeedPID = {15.25, 1.08, 0}; // i/10
-PID_t g_txyAnglePID = {0, 0, 23.0};
+PID_t g_txyAnglePID = {0, 0, 22.5};
 /******�������Ʋ���******/
 float g_fBluetoothSpeed;
 float g_fBluetoothDirection;
@@ -325,13 +325,14 @@ void MotorOutput(void)
   g_fRightMotorOut =
       g_fAngleControlOut - g_fSpeedControlOut + g_fBluetoothDirection;
   ;
-  // if (g_fForwardStatus == 1)
-  //   g_fLeftMotorOut -= g_fSpeedDelta;
-  // if (g_fForwardStatus == 1)
-  // {
-  //   g_fLeftMotorOut += g_fxyAngleControlOut;
-  //   g_fRightMotorOut -= g_fxyAngleControlOut;
-  // }
+  if (g_fForwardStatus == 1){
+    g_fLeftMotorOut -= g_fSpeedDelta;
+  }
+  if (g_fForwardStatus == 1)
+  {
+    g_fLeftMotorOut += g_fxyAngleControlOut;
+    // g_fRightMotorOut -= g_fxyAngleControlOut;
+  }
   /*������������*/
   if ((int)g_fLeftMotorOut > 0)
     g_fLeftMotorOut += MOTOR_OUT_DEAD_VAL;
@@ -443,7 +444,7 @@ void SpeedControl(void)
 {
   float fP, fI;
   float fDelta;
-  float fk = 0.02;
+  float fk = -23.0;
   speed_old_2 = g_fCarSpeed;
   g_fCarSpeed = (g_s32LeftMotorPulseSigma + g_s32RightMotorPulseSigma) * 0.5;
   g_fSpeedDelta = fk * (g_s32LeftMotorPulseSigma - g_s32RightMotorPulseSigma);
@@ -686,7 +687,7 @@ void ReportModeOneControl(void)
   {
   case FORWARD:
   {
-    if (g_Distance > 2)
+    if (g_Distance > 1.5)
     {
       report_mode_one_status = FORWARD_STOP;
       g_Distance = 0;
@@ -705,7 +706,7 @@ void ReportModeOneControl(void)
   }
   case BACK:
   {
-    if (g_Distance < -1.3)
+    if (g_Distance < -1.7)
     {
       report_mode_one_status = BACK_STOP;
       g_Distance = 0;
@@ -728,7 +729,7 @@ void ReportModeOneControl(void)
     {
       Steer(-1, 4);
       // g_iLeftTurnRoundCnt = -750;
-      g_iRightTurnRoundCnt = 5000;
+      g_iRightTurnRoundCnt = 7000;
       left_turn_start = 0;
     }
 
@@ -821,7 +822,7 @@ int left_one_start = 1;
 int right_two_start = 1;
 int left_two_start = 1;
 int current_direction = 1;
-int rotate_speed = 3;
+int rotate_speed = 5;
 int delta_distance = 0;
 int distance_old = -1;
 int fixed_distance = 0;
@@ -841,6 +842,7 @@ void ReportModeTwoControl()
   // ����Ѱ������������
   char result;
   char buffer[40];
+  float txy_Angle=g_fxyAngle;
 
   result = InfraredDetect();
   if ((result & infrared_channel_La) &&
@@ -864,16 +866,16 @@ void ReportModeTwoControl()
   {
     float direct = 0;
     float speed = 0;
-    speed = 2;
+    speed = 1;
 
-    //if (result & infrared_channel_Lc)
+    // if (result & infrared_channel_Lc)
     // direct = -10;
     // if (result & infrared_channel_Lb)
     // direct = 0;
     if (result & infrared_channel_La)
       direct = -4;
     // else if (result & infrared_channel_Rc)
-    // direct = 10;
+    //   direct = 10;
     // else if (result & infrared_channel_Rb)
     // direct = 6;
     else if (result & infrared_channel_Ra)
@@ -920,12 +922,18 @@ void ReportModeTwoControl()
       }
     }
     
-    sprintf(buffer, "status:%d distance:%d speed:%.3f ", distance_status, fixed_distance, g_fCarSpeed);
-    Uart1SendStr(buffer);
+    // sprintf(buffer, "status:%d distance:%d speed:%.3f ", distance_status, fixed_distance, g_fCarSpeed);
+    // Uart1SendStr(buffer);
     delta_distance = fixed_distance - distance_old;
     distance_old = fixed_distance;
     delta_speed = g_fCarSpeed - speed_old_2;
+    //Ԥ����
 
+    txy_Angle=txy_Angle-6;
+    // if (txy_Angle < -6 && txy_Angle > -12)
+    //   txy_Angle +=6;
+    // else if (txy_Angle >0 && txy_Angle < 6)
+    //   txy_Angle +=6;
     if (delta_speed <= -13 && distance_status == DISTANCE_FORWARD)
     {
       distance_status = FORCED_BACKWARD;
@@ -970,6 +978,40 @@ void ReportModeTwoControl()
       return;
     }
 
+
+    if (delta_distance > 25)
+    {
+
+    }
+    else
+    {
+      int is_direct=1;
+
+
+      is_direct= (abs(txy_Angle + 90) < 5 || abs(txy_Angle - 90) < 5 || abs(txy_Angle) < 6);
+      // TODO: test 500
+      //bug:���һ��ʱ��fixed_distance=0��
+      if (fixed_distance <= 3 || fixed_distance > 500)
+        distance_status = DISTANCE_BACKWARD;
+      else if ( fixed_distance < 15 || (!is_direct))
+      //( (fixed_distance >= 5 && fixed_distance < 15)|| (!is_direct))
+        distance_status = DISTANCE_TURN;
+      else if ( is_direct && fixed_distance >= 15)
+      {
+        if (g_fCarSpeed <= 3)
+          stop_counter++;
+        else
+          stop_counter = 0;
+        if (stop_counter >= 100)
+        {
+          distance_status = FORCED_BACKWARD;
+          stop_counter = 0;
+        }
+        else
+          distance_status = DISTANCE_FORWARD;
+      }
+    }
+
     //�Ƶ�����
     if (distance_status == DISTANCE_BACKWARD)
     {
@@ -978,10 +1020,11 @@ void ReportModeTwoControl()
     }
     else if (distance_status == DISTANCE_TURN)
     {
-      float angle = 90 + g_fxyAngle;
+      float angle = 90 + txy_Angle;
       if (angle <= 0 && current_direction == 1)
       {
         current_direction = -current_direction;
+        g_fxyAngle -= 17.5;
       }
       if (angle >= 180 && current_direction == -1)
       {
@@ -996,17 +1039,17 @@ void ReportModeTwoControl()
       {
         if (finetune_counter < 0)
         {
-          float angle = 90 + g_fxyAngle;
-          if (angle <= 0 && current_direction == 1)
-          {
-            current_direction = -current_direction;
-          }
-          if (angle >= 180 && current_direction == -1)
-          {
-            current_direction = -current_direction;
-          }
-          Steer(current_direction * rotate_speed, 0);
-          finetune_counter++;
+          // float angle = 90 + txy_Angle;
+          // if (angle <= 0 && current_direction == 1)
+          // {
+          //   current_direction = -current_direction;
+          // }
+          // if (angle >= 180 && current_direction == -1)
+          // {
+          //   current_direction = -current_direction;
+          // }
+          // Steer(current_direction * rotate_speed, 0);
+          // finetune_counter++;
         }
         else
         {
@@ -1016,49 +1059,10 @@ void ReportModeTwoControl()
       }
       else
       {
-        Steer(0, 4);
+        Steer(0, 6);
       }
     }
 
-    if (delta_distance > 25)
-    {
-
-    }
-    else
-    {
-      int is_direct=1;
-      float txy_Angle=g_fxyAngle;
-      //Ԥ����
-      if(txy_Angle>0 && txy_Angle <5) 
-        txy_Angle=txy_Angle-3.5;
-
-      txy_Angle=txy_Angle+3.5;
-
-      is_direct= (abs(txy_Angle + 90) < 5 || abs(txy_Angle - 90) < 5 || abs(txy_Angle) < 6);
-      // TODO: test 500
-      //bug:���һ��ʱ��fixed_distance=0��
-      if (fixed_distance!= 0 &&fixed_distance <= 5 || fixed_distance > 500)
-        distance_status = DISTANCE_BACKWARD;
-      else if ( (fixed_distance >= 5 && fixed_distance < 15)|| (!is_direct))
-      //( (fixed_distance >= 5 && fixed_distance < 15)|| (!is_direct))
-        distance_status = DISTANCE_TURN;
-      else if ( is_direct && fixed_distance >= 15)
-      {
-        if (g_fCarSpeed <= 0)
-          stop_counter++;
-        else
-          stop_counter = 0;
-        if (stop_counter >= 100)
-        {
-          distance_status = FORCED_BACKWARD;
-          stop_counter = 0;
-        }
-        else
-          distance_status = DISTANCE_FORWARD;
-      }
-    }
-
-    
   
   // // ���������
   // if (report_mode_two_status == AVOID) {

@@ -27,7 +27,7 @@ unsigned short  g_RunTime = 0;
 unsigned short  g_BatVolt=0;
 
 //小车运行模式:遥控模式、红外寻迹模式，超声波避障、超声波跟随模式
-unsigned char g_CarRunningMode = REPORT_MODE_ONE;//默认为
+unsigned char g_CarRunningMode = REPORT_MODE_TWO;//默认为
 
 
 //以下定义在manage.h中

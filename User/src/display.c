@@ -58,10 +58,10 @@ void ShowHomePage(void)
 
 	if(step == 1){
 
-		snprintf((char*)buff, 21, "xy: %0.1f      ", g_fxyAngle);
-		// if(IsUltraOK()){
-		// 	snprintf((char*)buff, 21,  "D: %d,%d", Distance,fixed_distance);
-		// }
+		// snprintf((char*)buff, 21, "xy: %0.1f      ", g_fxyAngle);
+		if(IsUltraOK()){
+			snprintf((char*)buff, 21,  "D: %d,%d", Distance,fixed_distance);
+		}
 		// else
 		// 	snprintf((char*)buff, 21,  "Distance:  %s(cm)       ", "xx");
 		
@@ -69,7 +69,7 @@ void ShowHomePage(void)
 	}
 
 	if(step == 2){
-		snprintf((char*)buff, 21,  "EncoLeft:  %d         ",g_s16LeftMotorPulse);
+		snprintf((char*)buff, 21,  "mode:  %d         ",report_mode_two_status);
 		OLED_ShowString(0, 2, buff);
 	}
 	if(step == 3){
