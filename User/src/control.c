@@ -325,14 +325,14 @@ void MotorOutput(void)
   g_fRightMotorOut =
       g_fAngleControlOut - g_fSpeedControlOut + g_fBluetoothDirection;
   ;
-  if (g_fForwardStatus == 1){
-    g_fLeftMotorOut -= g_fSpeedDelta;
-  }
-  if (g_fForwardStatus == 1)
-  {
-    g_fLeftMotorOut += g_fxyAngleControlOut;
-    // g_fRightMotorOut -= g_fxyAngleControlOut;
-  }
+  // if (g_fForwardStatus == 1){
+  //   g_fLeftMotorOut -= g_fSpeedDelta;
+  // }
+  // if (g_fForwardStatus == 1)
+  // {
+  //   g_fLeftMotorOut += g_fxyAngleControlOut;
+  //   // g_fRightMotorOut -= g_fxyAngleControlOut;
+  // }
   /*������������*/
   if ((int)g_fLeftMotorOut > 0)
     g_fLeftMotorOut += MOTOR_OUT_DEAD_VAL;
@@ -868,14 +868,14 @@ void ReportModeTwoControl()
     float speed = 0;
     speed = 1;
 
-    // if (result & infrared_channel_Lc)
-    // direct = -10;
+    if (result & infrared_channel_Lc)
+      direct = -10;
     // if (result & infrared_channel_Lb)
     // direct = 0;
     if (result & infrared_channel_La)
       direct = -4;
-    // else if (result & infrared_channel_Rc)
-    //   direct = 10;
+    else if (result & infrared_channel_Rc)
+      direct = 10;
     // else if (result & infrared_channel_Rb)
     // direct = 6;
     else if (result & infrared_channel_Ra)
