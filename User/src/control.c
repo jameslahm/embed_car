@@ -821,7 +821,7 @@ int left_one_start = 1;
 int right_two_start = 1;
 int left_two_start = 1;
 int current_direction = 1;
-int rotate_speed = 3;
+int rotate_speed = 4;
 int delta_distance = 0;
 int distance_old = -1;
 int fixed_distance = 0;
@@ -852,11 +852,12 @@ void ReportModeTwoControl()
   {
     if (report_mode_two_status == TRACE)
     {
-      report_mode_two_status = AVOID_BARRIAR;
+      report_mode_two_status = AVOID;
     }
     else if (report_mode_two_status == AVOID)
     {
-      // report_mode_two_status = STOP;
+      // if(left_barriar_counter<=0)
+      //   {report_mode_two_status = STOP;}
     }
   }
 
@@ -866,14 +867,14 @@ void ReportModeTwoControl()
     float speed = 0;
     speed = 2;
 
-    //if (result & infrared_channel_Lc)
-    // direct = -10;
+    if (result & infrared_channel_Lc)
+    direct = -10;
     // if (result & infrared_channel_Lb)
     // direct = 0;
     if (result & infrared_channel_La)
       direct = -4;
-    // else if (result & infrared_channel_Rc)
-    // direct = 10;
+    else if (result & infrared_channel_Rc)
+    direct = 10;
     // else if (result & infrared_channel_Rb)
     // direct = 6;
     else if (result & infrared_channel_Ra)
@@ -884,22 +885,29 @@ void ReportModeTwoControl()
     Steer(direct, speed);
   }
 
-  if (report_mode_two_status == AVOID_BARRIAR)
-  {
-    if (left_barriar_counter >= 0)
-    {
-      Steer(0, 4);
-      left_barriar_counter--;
-    }
-    else
-    {
-      report_mode_two_status = AVOID;
-    }
-  }
+  // if (report_mode_two_status == AVOID_BARRIAR)
+  // {
+  //   if (left_barriar_counter >= 0)
+  //   {
+  //     Steer(0, 4);
+  //     left_barriar_counter--;
+  //   }
+  //   else
+  //   {
+  //     report_mode_two_status = AVOID;
+  //   }
+  // }
 
   // 进入避障区
   if (report_mode_two_status == AVOID)
   {
+    float txy_Angle=g_fxyAngle;
+    if (left_barriar_counter >= 0)
+    {
+      left_barriar_counter--;
+      Steer(0, 4);
+      return;
+    }
 
     if (distance_old == -1)
     {
@@ -946,15 +954,15 @@ void ReportModeTwoControl()
       }
       return;
     }
-    else if (distance_status == FORCED_TURN)
+  else if (distance_status == FORCED_TURN)
     {
       if (turn_counter <= 50)
       {
-        if (90 + g_fxyAngle <= 0 && current_direction == 1)
+        if (90 + txy_Angle <= 0 && current_direction == 1)
         {
           current_direction = -current_direction;
         }
-        if (90 + g_fxyAngle >= 180 && current_direction == -1)
+        if (90 + txy_Angle >= 180 && current_direction == -1)
         {
           current_direction = -current_direction;
         }
@@ -971,14 +979,14 @@ void ReportModeTwoControl()
     }
 
     //移到上面
-    if (distance_status == DISTANCE_BACKWARD)
+  else if (distance_status == DISTANCE_BACKWARD)
     {
       Steer(0, -4);
       distance_status_old = distance_status;
     }
-    else if (distance_status == DISTANCE_TURN)
+  else if (distance_status == DISTANCE_TURN)
     {
-      float angle = 90 + g_fxyAngle;
+      float angle = 90 + g_fxyAngle+16;
       if (angle <= 0 && current_direction == 1)
       {
         current_direction = -current_direction;
@@ -992,32 +1000,30 @@ void ReportModeTwoControl()
     }
     else
     {
-      if (distance_status_old == DISTANCE_TURN)
-      {
-        if (finetune_counter < 0)
-        {
-          float angle = 90 + g_fxyAngle;
-          if (angle <= 0 && current_direction == 1)
-          {
-            current_direction = -current_direction;
-          }
-          if (angle >= 180 && current_direction == -1)
-          {
-            current_direction = -current_direction;
-          }
-          Steer(current_direction * rotate_speed, 0);
-          finetune_counter++;
-        }
-        else
-        {
-          finetune_counter = 0;
-          distance_status_old = distance_status;
-        }
-      }
-      else
-      {
-        Steer(0, 4);
-      }
+      // if (distance_status_old == DISTANCE_TURN)
+      // {
+      //   if (finetune_counter < 0)
+      //   {
+      //     float angle = 90 + txy_Angle;
+      //     if (angle <= 0 && current_direction == 1)
+      //     {
+      //       current_direction = -current_direction;
+      //     }
+      //     if (angle >= 180 && current_direction == -1)
+      //     {
+      //       current_direction = -current_direction;
+      //     }
+      //     Steer(current_direction * rotate_speed, 0);
+      //     finetune_counter++;
+      //   }
+      //   else
+      //   {
+      //     finetune_counter = 0;
+      //     distance_status_old = distance_status;
+      //   }
+      //}
+      
+        Steer(0, 6);
     }
 
 
@@ -1029,12 +1035,12 @@ void ReportModeTwoControl()
     else
     {
       int is_direct=1;
-      float txy_Angle=g_fxyAngle;
+      
       //预处理
-      if(txy_Angle>0 && txy_Angle <5) 
-        txy_Angle=txy_Angle-3.5;
+      if(txy_Angle>0 && txy_Angle <6) 
+        txy_Angle=txy_Angle-5;
 
-      txy_Angle=txy_Angle+3.5;
+      txy_Angle=txy_Angle+12;
 
       is_direct= (abs(txy_Angle + 90) < 5 || abs(txy_Angle - 90) < 5 || abs(txy_Angle) < 6);
       // TODO: test 500
@@ -1060,101 +1066,6 @@ void ReportModeTwoControl()
       }
     }
 
-    
-  
-  // // 进入避障区
-  // if (report_mode_two_status == AVOID) {
-  //   char buffer[40];
-  //   sprintf(buffer,"status:%d left pulse:%d right pulse:%d",avoid_status,g_s16LeftMotorPulse,g_s16RightMotorPulse);
-  //   Uart1SendStr(buffer);
-  //   switch (avoid_status) {
-  //   case AVOID_FORWARD: {
-  //     left_one_start = 1;
-  //     left_two_start = 1;
-  //     right_one_start = 1;
-  //     right_two_start = 1;
-  //     if (Distance > 0 && Distance <= 20) {
-  //       avoid_status = AVOID_RIGHT_ONE;
-  //     } else {
-  //       Steer(0, 4);
-  //     }
-  //     break;
-  //   }
-  //   case AVOID_RIGHT_ONE: {
-  //     if (right_one_start == 1) {
-  //       Steer(5, 0);
-  //       g_iLeftTurnRoundCnt = 1200;
-  //       right_one_start = 0;
-  //     }
-  //     if ((g_iLeftTurnRoundCnt < 0)) {
-  //       Steer(0, 4);
-  //       avoid_status = AVOID_FORWARD_AFTER_RIGHT_ONE;
-  //     }
-  //     break;
-  //   }
-  //   case AVOID_FORWARD_AFTER_RIGHT_ONE: {
-  //     if (Distance >= 0 && Distance <= 20) {
-  //       avoid_status = AVOID_LEFT_ONE;
-  //     } else {
-  //       Steer(0, 4);
-  //     }
-  //     break;
-  //   }
-  //   case AVOID_LEFT_ONE: {
-  //     if (left_one_start == 1) {
-  //       Steer(-5, 0);
-  //       g_iRightTurnRoundCnt = 750;
-  //       left_one_start = 0;
-  //     }
-  //     if ((g_iRightTurnRoundCnt < 0)) {
-  //       Steer(0, 4);
-  //       avoid_status = AVOID_FORWARD_AFTER_LEFT_ONE;
-  //     }
-  //     break;
-  //   }
-  //   case AVOID_FORWARD_AFTER_LEFT_ONE: {
-  //     if ((Distance >= 0) && (Distance <= 20)) {
-  //       avoid_status = AVOID_LEFT_TWO;
-  //     } else {
-  //       avoid_status = AVOID_FORWARD;
-  //     }
-  //     break;
-  //   }
-  //   case AVOID_LEFT_TWO: {
-  //     if (left_two_start ==1) {
-  //       Steer(-5, 0);
-  //       g_iRightTurnRoundCnt = 750;
-  //       left_two_start = 0;
-  //     }
-  //     if ((g_iRightTurnRoundCnt < 0)) {
-  //       Steer(0, 4);
-  //       avoid_status = AVOID_FORWARD_AFTER_LEFT_TWO;
-  //     }
-  //     break;
-  //   }
-  //   case AVOID_FORWARD_AFTER_LEFT_TWO: {
-  //     if (Distance >= 0 && Distance <= 20) {
-  //       avoid_status = AVOID_RIGHT_TWO;
-  //     } else {
-  //       Steer(0, 4);
-  //     }
-  //     break;
-  //   }
-  //   case AVOID_RIGHT_TWO: {
-  //     if (right_two_start == 1) {
-  //       Steer(5, 0);
-  //       g_iLeftTurnRoundCnt = 1200;
-  //       right_two_start = 0;
-  //     }
-  //     if ((g_iLeftTurnRoundCnt < 0)) {
-  //       Steer(0, 4);
-  //       avoid_status = AVOID_FORWARD;
-  //     }
-  //     break;
-  //   }
-  //   }
-  // }
-  // //
   }
 
 
