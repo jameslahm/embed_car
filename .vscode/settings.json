@@ -1,6 +1,9 @@
 {
     "files.encoding": "gbk",
     "files.associations": {
-        "functional": "c"
+        "functional": "c",
+        "cmath": "c",
+        "*.tcc": "c",
+        "cstdlib": "c"
     }
 }

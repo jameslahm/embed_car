@@ -1,12 +1,12 @@
 /**********************************************************************
-°æÈ¨ËùÓÐ£º	ß÷ÎØ´´ÐÂ¿Æ¼¼£¬2017.
-¹Ù		Íø£º	http://www.miaowlabs.com
-ÌÔ		±¦£º	https://shop275516297.taobao.com/
-ÎÄ ¼þ Ãû: 	ultrasonic.c
-×÷    Õß:   ß÷ÎØÊµÑéÊÒ
-°æ		±¾:   3.00
-Íê³ÉÈÕÆÚ:   2017.03.01
-¸Å		Òª: 	
+ï¿½ï¿½È¨ï¿½ï¿½ï¿½Ð£ï¿½	ï¿½ï¿½ï¿½Ø´ï¿½ï¿½Â¿Æ¼ï¿½ï¿½ï¿½2017.
+ï¿½ï¿½		ï¿½ï¿½ï¿½ï¿½	http://www.miaowlabs.com
+ï¿½ï¿½		ï¿½ï¿½ï¿½ï¿½	https://shop275516297.taobao.com/
+ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½: 	ultrasonic.c
+ï¿½ï¿½    ï¿½ï¿½:   ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½		ï¿½ï¿½:   3.00
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:   2017.03.01
+ï¿½ï¿½		Òª: 	
 
 
 ***********************************************************************/
@@ -18,19 +18,19 @@
 
 
 unsigned int TIM1CH4_CAPTURE_STA;
-//bit7:²¶»ñÍê³É±êÖ¾ 
-//bit6£º²¶»ñµ½¸ßµãÆ½±êÖ¾
-//bit5~0£º²¶»ñµ½¸ßµçÆ½ºó¶¨Ê±Æ÷Òç³öµÄ´ÎÊý
+//bit7:ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É±ï¿½Ö¾ 
+//bit6ï¿½ï¿½ï¿½ï¿½ï¿½ñµ½¸ßµï¿½Æ½ï¿½ï¿½Ö¾
+//bit5~0ï¿½ï¿½ï¿½ï¿½ï¿½ñµ½¸ßµï¿½Æ½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½
 unsigned int TIM1CH4_CAPTURE_VAL;
 
-// ³¬Éù²¨¼ì²â¾àÀë£¬µ¥Î»cm
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£¬ï¿½ï¿½Î»cm
 int Distance = 0;
-// ³¬Éù²¨×Ô¼ì±êÊ¶£¬0--Ä£¿éÃ»²åÉÏ£¬1--Ä£¿éÕý³£
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½Ê¶ï¿½ï¿½0--Ä£ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ï£ï¿½1--Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 int UltraError = 0;
 
 
 /*
-	²¶»ñÄ£Ê½³õÊ¼»¯(³¬Éù²¨²â¾àÂö¿í²¶»ñ)
+	ï¿½ï¿½ï¿½ï¿½Ä£Ê½ï¿½ï¿½Ê¼ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
 */
 void TIM1_Cap_Init(void)	
 {	 
@@ -39,68 +39,69 @@ void TIM1_Cap_Init(void)
 	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
  	NVIC_InitTypeDef NVIC_InitStructure;
 
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE);	//Ê¹ÄÜTIM1Ê±ÖÓ
- 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE); //Ê¹ÄÜGPIOAÊ±ÖÓ
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE);	//Ê¹ï¿½ï¿½TIM1Ê±ï¿½ï¿½
+ 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE); //Ê¹ï¿½ï¿½GPIOAÊ±ï¿½ï¿½
 	
 	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_11; 
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; 				//PA11 ÊäÈë  
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; 				//PA11 ï¿½ï¿½ï¿½ï¿½  
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 	
 	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_2;     
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;     	//PA2Êä³ö 
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;     	//PA2ï¿½ï¿½ï¿½ 
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;     	//2M
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 	
-	//³õÊ¼»¯¶¨Ê±Æ÷1 TIM1	 
-	TIM_TimeBaseStructure.TIM_Period = 0xFFFF; 						//Éè¶¨¼ÆÊýÆ÷×Ô¶¯ÖØ×°Öµ 
-	TIM_TimeBaseStructure.TIM_Prescaler =72-1; 						//Ô¤·ÖÆµÆ÷   
-	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1; //ÉèÖÃÊ±ÖÓ·Ö¸î:TDTS = Tck_tim
-	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;  //TIMÏòÉÏ¼ÆÊýÄ£Ê½
-	TIM_TimeBaseInit(TIM1, &TIM_TimeBaseStructure); 			//¸ù¾ÝTIM_TimeBaseInitStructÖÐÖ¸¶¨µÄ²ÎÊý³õÊ¼»¯TIMxµÄÊ±¼ä»ùÊýµ¥Î»
+	//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½1 TIM1	 
+	TIM_TimeBaseStructure.TIM_Period = 0xFFFF; 						//ï¿½è¶¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½×°Öµ 
+	TIM_TimeBaseStructure.TIM_Prescaler =72-1; 						//Ô¤ï¿½ï¿½Æµï¿½ï¿½   
+	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1; //ï¿½ï¿½ï¿½ï¿½Ê±ï¿½Ó·Ö¸ï¿½:TDTS = Tck_tim
+	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;  //TIMï¿½ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½Ä£Ê½
+	TIM_TimeBaseInit(TIM1, &TIM_TimeBaseStructure); 			//ï¿½ï¿½ï¿½ï¿½TIM_TimeBaseInitStructï¿½ï¿½Ö¸ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½TIMxï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»
   
-	//³õÊ¼»¯TIM1ÊäÈë²¶»ñ²ÎÊý
-	TIM_ICInitStructure.TIM_Channel = TIM_Channel_4; 			//CC1S=03 	Ñ¡ÔñÊäÈë¶Ë IC3Ó³Éäµ½TI1ÉÏ
-  TIM_ICInitStructure.TIM_ICPolarity = TIM_ICPolarity_Rising;	//ÉÏÉýÑØ²¶»ñ
+	//ï¿½ï¿½Ê¼ï¿½ï¿½TIM1ï¿½ï¿½ï¿½ë²¶ï¿½ï¿½ï¿½ï¿½ï¿½
+	TIM_ICInitStructure.TIM_Channel = TIM_Channel_4; 			//CC1S=03 	Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ IC3Ó³ï¿½äµ½TI1ï¿½ï¿½
+  TIM_ICInitStructure.TIM_ICPolarity = TIM_ICPolarity_Rising;	//ï¿½ï¿½ï¿½ï¿½ï¿½Ø²ï¿½ï¿½ï¿½
   TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;
-  TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;//ÅäÖÃÊäÈë·ÖÆµ,²»·ÖÆµ 
- 	TIM_ICInitStructure.TIM_ICFilter = 0x00;							//ÅäÖÃÊäÈëÂË²¨Æ÷ ²»ÂË²¨
+  TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æµ,ï¿½ï¿½ï¿½ï¿½Æµ 
+ 	TIM_ICInitStructure.TIM_ICFilter = 0x00;							//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë²ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ë²ï¿½
   TIM_ICInit(TIM1, &TIM_ICInitStructure);
 	
 
-	NVIC_InitStructure.NVIC_IRQChannel = TIM1_CC_IRQn|TIM1_UP_IRQn;  //TIM1ÖÐ¶Ï
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;  //ÏÈÕ¼ÓÅÏÈ¼¶2¼¶
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;  //´ÓÓÅÏÈ¼¶0¼¶
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; //IRQÍ¨µÀ±»Ê¹ÄÜ
-	NVIC_Init(&NVIC_InitStructure);  //¸ù¾ÝNVIC_InitStructÖÐÖ¸¶¨µÄ²ÎÊý³õÊ¼»¯ÍâÉèNVIC¼Ä´æÆ÷ 	
-	TIM_ITConfig(TIM1,TIM_IT_Update|TIM_IT_CC4,ENABLE);//ÔÊÐí¸üÐÂÖÐ¶Ï ,ÔÊÐíCC3IE²¶»ñÖÐ¶Ï	
- 	TIM_Cmd(TIM1,ENABLE ); 	//Ê¹ÄÜ¶¨Ê±Æ÷1
+	NVIC_InitStructure.NVIC_IRQChannel = TIM1_CC_IRQn|TIM1_UP_IRQn;  //TIM1ï¿½Ð¶ï¿½
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;  //ï¿½ï¿½Õ¼ï¿½ï¿½ï¿½È¼ï¿½2ï¿½ï¿½
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;  //ï¿½ï¿½ï¿½ï¿½ï¿½È¼ï¿½0ï¿½ï¿½
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; //IRQÍ¨ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½
+	NVIC_Init(&NVIC_InitStructure);  //ï¿½ï¿½ï¿½ï¿½NVIC_InitStructï¿½ï¿½Ö¸ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½NVICï¿½Ä´ï¿½ï¿½ï¿½ 	
+	TIM_ITConfig(TIM1,TIM_IT_Update|TIM_IT_CC4,ENABLE);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ ,ï¿½ï¿½ï¿½ï¿½CC3IEï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½	
+ 	TIM_Cmd(TIM1,ENABLE ); 	//Ê¹ï¿½Ü¶ï¿½Ê±ï¿½ï¿½1
 }
 
 /*
-	´¥·¢Ò»´Î³¬Éù²¨²â¾à£¬²¢¶ÁÈ¡ÉÏ´Î²âÁ¿½á¹û
+	ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Î³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½à£¬ï¿½ï¿½ï¿½ï¿½È¡ï¿½Ï´Î²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 */
 void Read_Distane(void)
 {   
 	 GPIO_SetBits(GPIOA, GPIO_Pin_2);
 	 delay_us(20);  
 	 GPIO_ResetBits(GPIOA, GPIO_Pin_2);
-	if(TIM1CH4_CAPTURE_STA&0X80)//³É¹¦²¶»ñµ½ÁËÒ»´Î¸ßµçÆ½
+	if(TIM1CH4_CAPTURE_STA&0X80)//ï¿½É¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Î¸ßµï¿½Æ½
 	{
 		Distance = TIM1CH4_CAPTURE_STA&0X3F;
-		Distance *= 65536;					 //Òç³öÊ±¼ä×ÜºÍ
-		Distance += TIM1CH4_CAPTURE_VAL;		//µÃµ½×ÜµÄ¸ßµçÆ½Ê±¼ä
-		Distance = Distance*170/10000;//³¬Éù²¨²â¾àÊÇ²âÁ¿Éù²¨·¢³öÈ¥ºÍ·´Éä»ØÀ´ÊÇÊ±¼ä¼ä¸ô£¬ÓÃÎ¢Ãî×öµ¥Î»¡£
-//¿ÕÆøÖÐµÄÉùËÙÊÇÃ¿Ãë340Ã×¡£Ò»Î¢ÃîÊ±¼äÉù²¨´«ÊäµÄ¾àÀëÊÇ340¡Á0.000001=0.00034Ã×=0.034ÀåÃ×£¬³ýÒÔ2¾ÍÊÇËù²â¾àÀë:0.017=1.7/100¡£Õâ¾ÍÊÇ1.7µÄÀ´Àú¡£
-		TIM1CH4_CAPTURE_STA=0;				//¿ªÆôÏÂÒ»´Î²¶»ñ
-	}				
+		Distance *= 65536;					 //ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Üºï¿½
+		Distance += TIM1CH4_CAPTURE_VAL;		//ï¿½Ãµï¿½ï¿½ÜµÄ¸ßµï¿½Æ½Ê±ï¿½ï¿½
+		Distance = Distance*170/10000;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¥ï¿½Í·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
+//ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½340ï¿½×¡ï¿½Ò»Î¢ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¾ï¿½ï¿½ï¿½ï¿½ï¿½340ï¿½ï¿½0.000001=0.00034ï¿½ï¿½=0.034ï¿½ï¿½ï¿½×£ï¿½ï¿½ï¿½ï¿½ï¿½2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:0.017=1.7/100ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1.7ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		TIM1CH4_CAPTURE_STA=0;				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Î²ï¿½ï¿½ï¿½
+	}
+
 }
 
 /*
-	²¶»ñÖÐ¶Ï´¦Àíº¯Êý
+	ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶Ï´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 */
 void TIM1_CC_IRQHandler(void)
 { 		    		  			    
-	if((TIM1CH4_CAPTURE_STA&0X80)==0)//»¹Î´Íê³ÉÒ»´ÎÂö³å²¶»ñ	
+	if((TIM1CH4_CAPTURE_STA&0X80)==0)//ï¿½ï¿½Î´ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½å²¶ï¿½ï¿½	
 	{	  
 		if (TIM_GetITStatus(TIM1, TIM_IT_Update) != RESET)
 		{	    
@@ -114,19 +115,19 @@ void TIM1_CC_IRQHandler(void)
 				else TIM1CH4_CAPTURE_STA++;
 			}	 
 		}
-		if (TIM_GetITStatus(TIM1, TIM_IT_CC4) != RESET)//Í¨µÀ4²¶»ñµ½ÊÂ¼þ
+		if (TIM_GetITStatus(TIM1, TIM_IT_CC4) != RESET)//Í¨ï¿½ï¿½4ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
 		{	
 			if(TIM1CH4_CAPTURE_STA&0X40){	  			
-				TIM1CH4_CAPTURE_STA|=0X80;		//±ê¼ÇÒÑ¾­²¶»ñµ½ÏÂ½µÑØ
+				TIM1CH4_CAPTURE_STA|=0X80;		//ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â½ï¿½ï¿½ï¿½
 				TIM1CH4_CAPTURE_VAL=TIM_GetCapture4(TIM1);
-				TIM_OC4PolarityConfig(TIM1,TIM_ICPolarity_Rising); //ÉèÖÃÎªÉÏÉýÑØ²¶»ñ
+				TIM_OC4PolarityConfig(TIM1,TIM_ICPolarity_Rising); //ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½Ø²ï¿½ï¿½ï¿½
 			}
 			else{
 				TIM1CH4_CAPTURE_STA=0;			
 				TIM1CH4_CAPTURE_VAL=0;
 				TIM_SetCounter(TIM1,0);
-				TIM1CH4_CAPTURE_STA|=0X40;													//±ê¼ÇÒÑ¾­²¶»ñµ½ÉÏÉýÑØ
-				TIM_OC4PolarityConfig(TIM1,TIM_ICPolarity_Falling);	// ÉèÖÃÎªÏÂ½µÑØ²¶»ñ
+				TIM1CH4_CAPTURE_STA|=0X40;													//ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+				TIM_OC4PolarityConfig(TIM1,TIM_ICPolarity_Falling);	// ï¿½ï¿½ï¿½ï¿½Îªï¿½Â½ï¿½ï¿½Ø²ï¿½ï¿½ï¿½
 			}		    
 		}			     	    					   
   }
@@ -134,11 +135,11 @@ void TIM1_CC_IRQHandler(void)
 }
 
 /*
-	Ä£¿é×Ô¼ì£¬ÓÃÓÚÉÏµçÊ±¼ì²â³¬Éù²¨Ä£¿éÊÇ·ñ²åÉÏ
+	Ä£ï¿½ï¿½ï¿½Ô¼ì£¬ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½Ê±ï¿½ï¿½â³¬ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
 */
 void UltraSelfCheck(void)
 {
-	delay_ms(1000);//ÐÂ°æ³¬Éù²¨Ä£¿éÉÏµçÄÚ²¿³õÊ¼»¯ÒªµÈ1Ãë£¬ÏÈÑÓÊ±1Ãë
+	delay_ms(1000);//ï¿½Â°æ³¬ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½Ïµï¿½ï¿½Ú²ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½Òªï¿½ï¿½1ï¿½ë£¬ï¿½ï¿½ï¿½ï¿½Ê±1ï¿½ï¿½
 	if(!GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_11)){
 		delay_ms(50);
 		if(!GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_11))

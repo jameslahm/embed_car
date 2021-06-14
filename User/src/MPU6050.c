@@ -41,7 +41,7 @@
 
 typedef enum _axis_t{x_Axis, y_Axis, z_Axis}axis_t;
 
-short g_fGyro_x,g_fAccel_y,g_fAccel_z;
+short g_fGyro_x,g_fGyro_z,g_fAccel_x,g_fAccel_y,g_fAccel_z;
 
 void MPU6050_Init(void)
 {
@@ -102,8 +102,10 @@ short ReadGyroData(axis_t  axis)
 void MPU6050_Pose(void)
 {	
 	g_fGyro_x = ReadGyroData(x_Axis); //陀螺仪x轴
+	g_fGyro_z = ReadGyroData(z_Axis);
 	g_fAccel_y = ReadAcceData(y_Axis); //加速度y轴 
-		g_fAccel_z = ReadAcceData(z_Axis); //加速度z轴
+	g_fAccel_z = ReadAcceData(z_Axis); //加速度z轴
+	g_fAccel_x = ReadAcceData(x_Axis);
 }
 
 
